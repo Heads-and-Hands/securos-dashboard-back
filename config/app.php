@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /* Провайдер для работы с REST API Securos */
+        App\Providers\SecurosApiProvider::class,
+
     ],
 
     /*
@@ -227,6 +230,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        /* Фасад для работы с Securos*/
+        'SecurosAPI' => App\Custom\Facades\SecurosAPI::class,        
     ],
 
 ];
