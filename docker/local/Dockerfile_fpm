@@ -1,0 +1,37 @@
+FROM php:7.4-fpm-alpine as base
+
+RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
+    echo /etc/apk/respositories && \
+    apk update && \
+    apk add --no-cache bash wget
+
+RUN set -ex && apk add --no-cache postgresql-dev libpng-dev libzip-dev icu-dev \
+    supervisor libxml2-dev oniguruma-dev $PHPIZE_DEPS \
+    && docker-php-ext-install pdo pdo_pgsql bcmath mbstring gd sockets pcntl \
+    zip iconv intl xml json dom zip opcache \
+    && pecl install xdebug redis && docker-php-ext-enable xdebug redis \
+    && rm -rf /var/cache/apk/* \
+    && echo $'xdebug.mode=debug \n\
+               xdebug.start_with_request=yes \n\
+               xdebug.xdebug.remote_port=9003 \n\
+               xdebug.xdebug.client_host=${REMOTE_HOST} \n\
+               xdebug.discover_client_host=0 \n\
+               xdebug.remote_handler=dbgp' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+# Install composer
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_HOME /tmp
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --version=1.10.16 --filename=composer \
+    && composer clear-cache && rm -rf /tmp/composer-setup.php /tmp/.htaccess
+
+# alias for artisan
+RUN echo '#! /bin/sh' >> /bin/art \
+    && echo '/usr/local/bin/php /app/artisan "$@"' >> /bin/art \
+    && chmod u+x /bin/art
+
+RUN crontab -u www-data -l | { cat; echo "* * * * * php /app/artisan schedule:run"; } | crontab -
+
+FROM base AS app
+WORKDIR /app
+
+CMD php-fpm
