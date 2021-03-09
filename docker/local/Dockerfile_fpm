@@ -14,7 +14,7 @@ RUN set -ex && apk add --no-cache postgresql-dev libpng-dev libzip-dev icu-dev \
     && echo $'xdebug.mode=debug \n\
                xdebug.start_with_request=yes \n\
                xdebug.xdebug.remote_port=9003 \n\
-               xdebug.xdebug.client_host=${REMOTE_HOST} \n\
+               xdebug.client_host=${REMOTE_HOST} \n\
                xdebug.discover_client_host=0 \n\
                xdebug.remote_handler=dbgp' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 

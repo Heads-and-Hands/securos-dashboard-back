@@ -17,12 +17,13 @@ class CreateVideoCamerasTable extends Migration
             $table->integer('id');
             $table->string('name');
             $table->string('ip');
-            $table->smallInteger('ip_decode');
-            $table->string('server');
-            $table->smallInteger('ip_server_decode');
-            $table->smallInteger('status');
-            $table->smallInteger('status_exploitation');
-            $table->text('passport');
+            $table->tinyInteger('type');
+            $table->bigInteger('ip_decode');
+            $table->string('ip_server');
+            $table->bigInteger('ip_server_decode');
+            $table->tinyInteger('status');
+            $table->tinyInteger('status_exploitation');
+            $table->text('passport')->nullable();
             $table->timestamps();
         });
     }

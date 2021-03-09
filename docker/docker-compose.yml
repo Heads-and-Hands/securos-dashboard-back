@@ -24,10 +24,10 @@ services:
     environment: &fpm-env
       PHP_IDE_CONFIG: serverName=docker-securos-dashboard
       REMOTE_HOST: host.docker.internal
-      DB_HOST: postgres
-      DB_DATABASE: &pg-db-name app
-      DB_USERNAME: &pg-username securos_dashboard
-      DB_PASSWORD: &pg-password KBHJ8765ljk767kh
+      SECUROS_DASHBOARD_DB_HOST: postgres
+      SECUROS_DASHBOARD_DB_DATABASE: &pg-db-name app
+      SECUROS_DASHBOARD_DB_USERNAME: &pg-username securos_dashboard
+      SECUROS_DASHBOARD_DB_PASSWORD: &pg-password KBHJ8765ljk767kh
       SCHEDULE_PERIOD: 60
       APP_ENV: local
       APP_DEBUG: 'true'

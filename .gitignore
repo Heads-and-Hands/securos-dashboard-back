@@ -21,3 +21,4 @@ composer.lock
 .composer
 _ide_helper*
 /docker/dbdata
+.config/psysh/psysh_history
