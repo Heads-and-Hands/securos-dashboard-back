@@ -23,7 +23,7 @@ class VideoCamerasCollection extends BaseResourceCollection
         return array_merge(
             $data,
             [
-                'statistic' => VideoCamera::getCameraStatistics(),
+                'statistic' => VideoCamera::getStatistics(),
                 'pagination' => [
                     'total'  => $paginated['total'] ?? null,
                     'limit'  => $paginated['limit'] ?? null,

@@ -61,15 +61,15 @@ class VideoCamera extends Model
 
     #TODO упорядочить список после того как утвердят тз
     public const REGULAR_CAMERA = 10;
-    public const DEFECT = 20;
-    public const NOT_IN_OPERATION = 30;
-    public const UNKNOWN = 40;
+    public const NOT_IN_OPERATION = 20;
+    public const UNKNOWN = 30;
+    public const DEFECT = 40;
 
     static public array $statuses = [
         self::REGULAR_CAMERA  => 'regularCamera',
-        self::DEFECT => 'defect',
         self::NOT_IN_OPERATION => 'notInOperation',
         self::UNKNOWN => 'unknown',
+        self::DEFECT => 'defect',
     ];
 
     public const INTRODUCED = 10;
@@ -122,12 +122,15 @@ class VideoCamera extends Model
     public function getPassportAttribute($passport)
     {
         if ($passport) {
-            return json_encode($passport);
+            return json_decode($passport);
         }
     }
 
     public function setPassportAttribute($passport)
     {
-        return json_decode($passport);
+        if ($passport) {
+            return $this->attributes['passport'] = json_encode($passport);
+        }
+        return $this->attributes['passport'] = null;
     }
 }

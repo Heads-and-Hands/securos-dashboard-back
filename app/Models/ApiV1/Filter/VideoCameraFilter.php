@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Models\ApiV1\Filter;
 
-use App\Http\Requests\ApiV1\VideoCameraFilterRequest;
+use App\Http\Requests\ApiV1\VideoCamera\Filter\VideoCameraFilterRequest;
 use App\Models\ApiV1\VideoCamera;
 use App\Models\QueryFilter;
 

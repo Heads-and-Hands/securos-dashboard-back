@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class VideoCamera extends VC
 {
-    public static function getCameraStatistics(): array
+    public static function getStatistics(): array
     {
         $data = DB::table('video_cameras')
             ->select('status', DB::raw('count(*) as total'))
@@ -24,7 +24,7 @@ class VideoCamera extends VC
             ])->toArray();
 
         $response['value'] = VideoCamerasStatisticResource::collection($data);
-        $response['countAllCameras'] = self::count();
+        $response['countAllCameras'] = self::query()->count();
 
         return $response;
     }

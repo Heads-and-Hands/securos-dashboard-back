@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Requests\ApiV1;
+namespace App\Http\Requests\ApiV1\VideoCamera\Filter;
 
 use App\Models\ApiV1\VideoCamera;
 use Illuminate\Foundation\Http\FormRequest;
