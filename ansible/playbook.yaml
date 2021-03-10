@@ -1,0 +1,45 @@
+- hosts: localhost
+  tasks:
+    - name: docker build
+      raw: docker-compose -f ../docker/docker-compose.dev.yml build
+
+    - name: docker login
+      raw: docker login -u test -p {{lookup('env','registrypassword')}} registry.handh.ru
+
+    - name: docker push
+      raw: docker-compose -f ../docker/docker-compose.dev.yml push
+
+
+- hosts: dev
+  tasks:
+    - name: Set vars
+      set_fact:
+        appDir: '/var/www/securos-dashboard'
+        projectAlias: 'rc'
+    - name: Check compose file exists.
+      stat:
+        path: "{{ appDir }}/docker-compose.dev.yml"
+      register: p
+    - name: save old compose file
+      shell: mv docker-compose.dev.yml docker-compose.dev-prev.yml
+      when: p.stat.exists
+      args:
+        chdir: /var/www/securos-dashboard
+    - name: copy new docker-compose file
+      copy:
+        src: ../docker/docker-compose.dev.yml
+        dest: "{{ appDir }}/docker-compose.dev.yml"
+    - name: docker-compose pull and down and up
+      shell: |
+        export VERSION={{lookup('env','VERSION')}}
+        export COMPOSE_INTERACTIVE_NO_CLI=1
+        export PROJECT_NAME={{lookup('env','PROJECT_NAME')}}
+        docker login -u test -p {{lookup('env','registrypassword')}} registry.handh.ru
+        mkdir -p common dev local prod release
+        docker-compose -f docker-compose.dev.yml pull
+        [ -f docker-compose.dev-prev.yml ] && docker-compose -p {{ projectAlias }} -f docker-compose.dev-prev.yml down -v
+        docker-compose -p {{ projectAlias }} -f docker-compose.dev.yml up -d
+        sleep 10
+        docker exec -t {{lookup('env','PROJECT_NAME')}}_fpm bash -c "TELESCOPE_ENABLED=false art migrate --no-interaction"
+      args:
+        chdir: "{{ appDir }}"

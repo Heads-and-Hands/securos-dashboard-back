@@ -1,0 +1,109 @@
+version: '3.4'
+
+networks:
+  default:
+  proxy:
+    external: true
+
+volumes:
+  app_volume:
+
+services:
+  beanstalkd:
+    image: bodsch/docker-beanstalkd
+    container_name: ${PROJECT_NAME}_beanstalkd
+    networks:
+      - default
+    labels:
+      - "traefik.enable=false"
+
+  fpm: &fpm-container
+    build:
+      context: ../
+      dockerfile: ./docker/dev/Dockerfile_fpm
+      args:
+        GIT_TOKEN: ${GIT_TOKEN}
+    container_name: ${PROJECT_NAME}_fpm
+    restart: always
+    image: "registry.handh.ru/${PROJECT_NAME}/backend-dev/fpm:${VERSION}"
+    networks:
+      - default
+    volumes:
+      - &app_src app_volume:/app
+      - &files ./files-dev:/files:rw
+      - ./logs-dev/app:/logs:rw
+      - ./logs-dev/supervisord:/var/log/supervisord:rw
+    env_file: .env
+    environment:
+      DB_DATABASE: &pg-db-name ${DB_DATABASE}
+      DB_USERNAME: &pg-username ${DB_USERNAME}
+      DB_PASSWORD: &pg-password ${DB_PASSWORD}
+    labels:
+      - "traefik.enable=false"
+    depends_on:
+      - postgres
+      - redis
+
+  cron:
+    <<: *fpm-container
+    restart: always
+    container_name: ${PROJECT_NAME}_cron
+    command: "crond -f"
+    depends_on:
+      - fpm
+
+  queue-worker:
+    <<: *fpm-container
+    restart: always
+    container_name: ${PROJECT_NAME}_queue_worker
+    command: "supervisord -c /usr/local/etc/supervisord.conf"
+    depends_on:
+      - fpm
+    labels:
+      - "traefik.enable=false"
+
+  nginx:
+    build:
+      context: ./dev
+      dockerfile: Dockerfile_nginx
+    container_name: ${PROJECT_NAME}_nginx
+    labels:
+      - "traefik.docker.network=proxy"
+      - "traefik.http.services.${PROJECT_NAME}.loadbalancer.server.port=80"
+      - "traefik.http.routers.${PROJECT_NAME}.rule=Host(`securos-dashboard.hnh-dev.ru`)"
+      - "traefik.http.routers.${PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${PROJECT_NAME}.tls.certresolver=myhttpchallenge"
+    restart: always
+    volumes:
+      - *app_src
+      - *files
+      - ./logs-dev/nginx:/var/log/nginx:rw
+    image: "registry.handh.ru/${PROJECT_NAME}/backend-dev/nginx:${VERSION}"
+    networks:
+      - default
+      - proxy
+    depends_on:
+      - fpm
+
+  postgres:
+    image: postgres:11.1
+    networks:
+      - default
+      - proxy
+    restart: always
+    labels:
+      - "traefik.enable=false"
+    container_name: ${PROJECT_NAME}_db
+    environment:
+      POSTGRES_DB: *pg-db-name
+      POSTGRES_USER: *pg-username
+      POSTGRES_PASSWORD: *pg-password
+    volumes:
+      - ./dbdata-dev:/var/lib/postgresql/data
+    ports:
+      - 9435:5432
+
+  redis:
+    image: redis:alpine
+    restart: always
+
