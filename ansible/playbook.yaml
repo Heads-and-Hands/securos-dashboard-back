@@ -15,7 +15,7 @@
     - name: Set vars
       set_fact:
         appDir: '/var/www/securos-dashboard'
-        projectAlias: 'rc'
+        projectAlias: 'sd'
     - name: Check compose file exists.
       stat:
         path: "{{ appDir }}/docker-compose.dev.yml"
