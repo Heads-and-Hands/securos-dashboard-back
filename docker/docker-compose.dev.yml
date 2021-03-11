@@ -94,7 +94,7 @@ services:
     volumes:
       - ./dbdata-dev:/var/lib/postgresql/data
     ports:
-      - 9435:5432
+      - 9451:5432
 
   redis:
     image: redis:alpine
