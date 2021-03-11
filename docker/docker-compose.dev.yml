@@ -21,10 +21,7 @@ services:
     build:
       context: ../
       dockerfile: ./docker/dev/Dockerfile_fpm
-      args:
-        GIT_TOKEN: ${GIT_TOKEN}
     container_name: ${PROJECT_NAME}_fpm
-    restart: always
     image: "registry.handh.ru/${PROJECT_NAME}/backend-dev/fpm:${VERSION}"
     networks:
       - default
