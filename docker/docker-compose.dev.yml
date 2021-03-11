@@ -51,7 +51,9 @@ services:
     <<: *fpm-container
     restart: always
     container_name: ${PROJECT_NAME}_queue_worker
-    command: "supervisord -c /usr/local/etc/supervisord.conf"
+    command: "art queue:work --queue=emails,videos"
+    networks:
+      - proxy
     depends_on:
       - fpm
     labels:
