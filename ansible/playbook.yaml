@@ -9,16 +9,11 @@
     - name: docker push
       raw: docker-compose -f ../docker/docker-compose.dev.yml push
 
-
 - hosts: dev
   tasks:
-    - name: Set vars
-      set_fact:
-        appDir: '/var/www/securos-dashboard'
-        projectAlias: 'sd'
     - name: Check compose file exists.
       stat:
-        path: "{{ appDir }}/docker-compose.dev.yml"
+        path: /var/www/securos-dashboard/docker-compose.dev.yml
       register: p
     - name: save old compose file
       shell: mv docker-compose.dev.yml docker-compose.dev-prev.yml
@@ -28,7 +23,7 @@
     - name: copy new docker-compose file
       copy:
         src: ../docker/docker-compose.dev.yml
-        dest: "{{ appDir }}/docker-compose.dev.yml"
+        dest: /var/www/securos-dashboard/docker-compose.dev.yml
     - name: docker-compose pull and down and up
       shell: |
         export VERSION={{lookup('env','VERSION')}}
@@ -37,9 +32,9 @@
         docker login -u test -p {{lookup('env','registrypassword')}} registry.handh.ru
         mkdir -p common dev local prod release
         docker-compose -f docker-compose.dev.yml pull
-        [ -f docker-compose.dev-prev.yml ] && docker-compose -p {{ projectAlias }} -f docker-compose.dev-prev.yml down -v
-        docker-compose -p {{ projectAlias }} -f docker-compose.dev.yml up -d
+        [ -f docker-compose.dev-prev.yml ] && docker-compose -p securos_dashboard -f docker-compose.dev-prev.yml down -v
+        docker-compose -p securos_dashboard -f docker-compose.dev.yml up -d
         sleep 10
-        docker exec -t {{lookup('env','PROJECT_NAME')}}_fpm bash -c "TELESCOPE_ENABLED=false art migrate --no-interaction"
+        docker exec -t securos_dashboard_fpm bash -c "TELESCOPE_ENABLED=false art migrate --no-interaction"
       args:
-        chdir: "{{ appDir }}"
+        chdir: /var/www/securos-dashboard
