@@ -35,6 +35,7 @@ COPY ./ /app
 RUN crontab -l | { cat; echo "* * * * * php /app/artisan schedule:run"; } | crontab -
 
 ENV TELESCOPE_ENABLED=false
+RUN bash -c 'mkdir -p storage/framework/{sessions,views,cache}'
 RUN mv .env.dev .env && composer dumpautoload -o && art key:generate
 
 RUN rm -rf /app/storage/logs && ln -s /logs /app/storage \
