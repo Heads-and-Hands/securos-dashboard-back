@@ -13,12 +13,8 @@ RUN set -ex && apk add postgresql-dev libpng-dev libzip-dev icu-dev \
     && rm -rf /var/cache/apk/*
 
 # Install composer
-ENV COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_MEMORY_LIMIT=-1 COMPOSER_HOME=/tmp
-ARG GIT_TOKEN
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --version=1.10.16 --filename=composer \
-    #for "Could not authenticate against github.com"
-    && composer config -g github-oauth.github.com $GIT_TOKEN \
-    && composer --no-interaction global require 'hirak/prestissimo' \
+ENV COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_HOME=/tmp COMPOSER_MEMORY_LIMIT=-1
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer clear-cache && rm -rf /tmp/composer-setup.php /tmp/.htaccess
 
 # alias for artisan
@@ -36,11 +32,7 @@ RUN composer install --no-scripts --no-autoloader && composer update --no-autolo
 
 COPY ./ /app
 
-#for correct cron user
-RUN chmod +s /bin/busybox
-USER www-data
 RUN crontab -l | { cat; echo "* * * * * php /app/artisan schedule:run"; } | crontab -
-USER root
 
 ENV TELESCOPE_ENABLED=false
 RUN mv .env.dev .env && composer dumpautoload -o && art key:generate
