@@ -32,9 +32,9 @@ services:
       - ./logs-dev/supervisord:/var/log/supervisord:rw
     env_file: .env
     environment:
-      DB_DATABASE: &pg-db-name ${DB_DATABASE}
-      DB_USERNAME: &pg-username ${DB_USERNAME}
-      DB_PASSWORD: &pg-password ${DB_PASSWORD}
+      SECUROS_DASHBOARD_DB_DATABASE: &pg-db-name ${SECUROS_DASHBOARD_DB_DATABASE}
+      SECUROS_DASHBOARD_DB_USERNAME: &pg-username ${SECUROS_DASHBOARD_DB_USERNAME}
+      SECUROS_DASHBOARD_DB_PASSWORD: &pg-password ${SECUROS_DASHBOARD_DB_PASSWORD}
     labels:
       - "traefik.enable=false"
     depends_on:
