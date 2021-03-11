@@ -99,4 +99,8 @@ services:
   redis:
     image: redis:alpine
     restart: always
-
+    container_name: ${PROJECT_NAME}_redis
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=false"
