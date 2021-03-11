@@ -3,8 +3,8 @@
 /public/storage
 /storage/*.key
 /vendor
-.env
-.env.backup
+/.env
+/.env.backup
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
@@ -14,7 +14,6 @@ yarn-error.log
 /public/vendor
 /storage/*
 /files
-/.env
 .idea
 composer.lock
 .bash_history

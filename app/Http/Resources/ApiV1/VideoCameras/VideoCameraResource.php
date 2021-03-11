@@ -8,12 +8,9 @@ use App\Models\ApiV1\VideoCamera;
 
 class VideoCameraResource extends BaseResource
 {
-    /**
-     * @return array
-     * @var $this VideoCamera
-     */
     public function toArray($request): array
     {
+        /** @var VideoCamera $this */
         return [
             'id' => $this->id,
             'name' => $this->name,
