@@ -16,11 +16,9 @@ class VideoCameraController extends Controller
         return new VideoCamerasCollection($videoCameras);
     }
 
-    public function camerasShort(VideoCameraShortFilter $filter)
+    public function camerasShort(VideoCameraShortFilter $filter): VideoCamerasShortCollection
     {
-        $videoCameras = VideoCamera::query()
-            ->select('id', 'name')
-            ->shortFilter($filter)->offsetPaginate();
+        $videoCameras = VideoCamera::getShortCameras($filter);
 
         return new VideoCamerasShortCollection($videoCameras);
     }

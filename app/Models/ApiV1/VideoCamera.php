@@ -27,6 +27,12 @@ class VideoCamera extends VC
         return $response;
     }
 
+    public static function getShortCameras($filter)
+    {
+        return self::query()->select('id', 'name')
+            ->shortFilter($filter)->offsetPaginate();
+    }
+
     public function scopeFilter(Builder $query, VideoCameraFilter $filter): void
     {
         $filter->apply($query);
