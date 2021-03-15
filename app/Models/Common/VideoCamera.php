@@ -84,7 +84,7 @@ class VideoCamera extends Model
 
     protected $fillable = [
         'id', 'name', 'ip', 'type', 'ip_decode', 'ip_server', 'ip_server_decode',
-        'status_exploitation', 'passport'
+        'status_exploitation', 'passport', 'status'
     ];
 
     public function getTypeAttribute($type): string
@@ -124,6 +124,14 @@ class VideoCamera extends Model
         if ($passport) {
             return json_decode($passport);
         }
+    }
+
+    public function setTypeAttribute($type)
+    {
+        if ($type) {
+            return $this->attributes['type'] = self::PTZ;
+        }
+        return $this->attributes['type'] = self::NOT_A_PTZ;
     }
 
     public function setPassportAttribute($passport)

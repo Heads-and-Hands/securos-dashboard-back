@@ -14,7 +14,7 @@ class CreateVideoCamerasTable extends Migration
     public function up(): void
     {
         Schema::create('video_cameras', function (Blueprint $table) {
-            $table->integer('id');
+            $table->integer('id')->unique();
             $table->string('name');
             $table->string('ip');
             $table->tinyInteger('type');
@@ -22,7 +22,7 @@ class CreateVideoCamerasTable extends Migration
             $table->string('ip_server');
             $table->bigInteger('ip_server_decode');
             $table->tinyInteger('status');
-            $table->tinyInteger('status_exploitation');
+            $table->tinyInteger('status_exploitation')->nullable();
             $table->text('passport')->nullable();
             $table->timestamps();
         });
