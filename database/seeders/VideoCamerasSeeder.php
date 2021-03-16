@@ -35,7 +35,7 @@ class VideoCamerasSeeder extends Seeder
     public function run(): void
     {
         $i = 1;
-        while ($i <= 10):
+        while ($i <= 100):
             VideoCamera::updateOrCreate(
                 ['id' => random_int(1, 50)],
                 [

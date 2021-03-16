@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace App\Components;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ClientException;
+use Illuminate\Http\JsonResponse;
 use function GuzzleHttp\Psr7\build_query;
 
 class Request
@@ -28,7 +31,7 @@ class Request
                 ]
             );
         } catch (RequestException $e) {
-            return $e->getMessage();
+            return $e->getResponse()->getBody()->getContents();
         }
     }
 
