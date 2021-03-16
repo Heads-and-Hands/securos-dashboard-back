@@ -36,10 +36,11 @@ class VideoCamerasSeeder extends Seeder
     {
         $i = 1;
         while ($i <= 100):
+            $id = random_int(1, 500);
             VideoCamera::updateOrCreate(
-                ['id' => random_int(1, 50)],
+                ['id' => $id],
                 [
-                    'id' => random_int(1, 50),
+                    'id' => $id,
                     'name' => 'AHD 2Мп Ps-Link KIT-C204HD V-'.random_int(1, 50),
                     'ip' => self::IPS[array_rand(self::IPS)],
                     'type' => self::TYPE[array_rand(self::TYPE)],
