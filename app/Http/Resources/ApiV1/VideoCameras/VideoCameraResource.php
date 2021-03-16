@@ -19,6 +19,9 @@ class VideoCameraResource extends BaseResource
             'ipServer' => $this->ip_server,
             'status' => $this->status,
             'passport' => $this->passport,
+            'statusExploitation' => $this->status_exploitation,
+            'approvalAt' => $this->approval_at,
+            'creationAt' => $this->creation_at,
         ];
     }
 }

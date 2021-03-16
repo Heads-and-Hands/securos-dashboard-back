@@ -24,6 +24,8 @@ class CreateVideoCamerasTable extends Migration
             $table->tinyInteger('status');
             $table->tinyInteger('status_exploitation')->nullable();
             $table->text('passport')->nullable();
+            $table->dateTime('approval_at')->nullable();
+            $table->dateTime('creation_at')->nullable();
             $table->timestamps();
         });
     }

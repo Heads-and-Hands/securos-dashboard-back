@@ -39,7 +39,7 @@ class VideoCameraFilter extends QueryFilter
     {
         if ($value) {
             $value = explode(',', $value);
-            $this->builder->whereIN('ip_server', $value);
+            $this->builder->whereIn('ip_server', $value);
         }
     }
 

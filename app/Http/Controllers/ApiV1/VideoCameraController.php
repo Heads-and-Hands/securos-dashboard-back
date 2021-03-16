@@ -20,7 +20,7 @@ class VideoCameraController extends Controller
         if ((bool)request('updateCameras', false)) {
             VideoCamera::query()->upsert(SecurosCameras::getCameras(), ['id'],
             ['name', 'ip', 'type', 'ip_decode', 'ip_server', 'ip_server_decode',
-                'status_exploitation', 'passport', 'status']);
+                'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at']);
         }
         $videoCameras = VideoCamera::filter($filter)->offsetPaginate();
 

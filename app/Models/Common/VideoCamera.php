@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\{Factories\HasFactory, Model};
  * @property int $status
  * @property int $status_exploitation
  * @property string|null $passport
+ * @property string|null $approval_at
+ * @property string|null $creation_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|VideoCamera newModelQuery()
@@ -36,6 +38,8 @@ use Illuminate\Database\Eloquent\{Factories\HasFactory, Model};
  * @method static \Illuminate\Database\Eloquent\Builder|VideoCamera whereStatusExploitation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|VideoCamera whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|VideoCamera whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VideoCamera whereApprovalAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VideoCamera whereCreationAt($value)
  * @mixin \Eloquent
  */
 class VideoCamera extends Model
@@ -84,7 +88,7 @@ class VideoCamera extends Model
 
     protected $fillable = [
         'id', 'name', 'ip', 'type', 'ip_decode', 'ip_server', 'ip_server_decode',
-        'status_exploitation', 'passport', 'status'
+        'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at'
     ];
 
     public function getTypeAttribute($type): string
@@ -140,5 +144,10 @@ class VideoCamera extends Model
             return $this->attributes['passport'] = json_encode($passport);
         }
         return $this->attributes['passport'] = null;
+    }
+
+    public function getStatusExploitationAttribute($status): string
+    {
+        return static::$statusesExploitation[$status];
     }
 }

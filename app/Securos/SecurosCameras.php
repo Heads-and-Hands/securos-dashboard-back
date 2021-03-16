@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Securos;
 
 use App\Models\ApiV1\VideoCamera;
+use Carbon\Carbon;
 
 class SecurosCameras extends BaseRequest
 {
@@ -32,6 +33,8 @@ class SecurosCameras extends BaseRequest
                 'ip_server_decode' => self::getIpDecode($camera->server),
                 'status_exploitation' => self::getStatusExploitation($camera), #TODO по доки с их апи ничего не понятно
                 'status' => self::getStatus($camera->status),
+                'approval_at' => isset($camera->approval_time) ? Carbon::parse($camera->approval_time) : null,
+                'creation_at' => isset($camera->creation_time) ? Carbon::parse($camera->creation_time) : null,
             ];
         }
 
