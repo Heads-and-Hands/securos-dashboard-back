@@ -13,6 +13,7 @@ class VideoCameraFilterRequest extends FormRequest
     {
         return [
             'rangeOfIpCameras' => ['string'],
+            'rangeOfIpServer' => ['string'],
             'statusCameras' => [
                 function ($attribute, $value, $fail) {
                     $statuses = explode(',', $value);

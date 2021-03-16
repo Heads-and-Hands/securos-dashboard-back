@@ -35,6 +35,14 @@ class VideoCameraFilter extends QueryFilter
         }
     }
 
+    public function rangeOfIpServer($value): void
+    {
+        if ($value) {
+            $value = explode(',', $value);
+            $this->builder->whereIN('ip_server', $value);
+        }
+    }
+
     public function statusExploitation($value): void
     {
         if ($value) {
