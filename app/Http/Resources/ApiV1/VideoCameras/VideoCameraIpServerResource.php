@@ -2,14 +2,14 @@
 
 namespace App\Http\Resources\ApiV1\VideoCameras;
 
+use App\Http\Resources\ApiV1\BaseResource;
 use App\Models\ApiV1\VideoCamera;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class VideoCameraIpServerResource extends JsonResource
+class VideoCameraIpServerResource extends BaseResource
 {
     public function toArray($request): array
     {
-        /** @var $this VideoCamera */
+        /** @var VideoCamera $this */
         return [
             'ipServer' => $this->ip_server,
         ];
