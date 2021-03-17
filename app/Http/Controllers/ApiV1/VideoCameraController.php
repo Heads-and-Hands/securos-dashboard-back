@@ -15,10 +15,12 @@ use App\Models\ApiV1\{Filter\VideoCameraFilter,
 
 class VideoCameraController extends Controller
 {
-    public function index(VideoCameraFilter $filter): VideoCamerasCollection
+    public function index(VideoCameraFilter $filter)
     {
         if ((bool)request('updateCameras', false)) {
             dispatch(new SecurosCamerasJob());
+
+            return response()->json(['status' => 'success'], 200);
         }
         $videoCameras = VideoCamera::filter($filter)->offsetPaginate();
 
