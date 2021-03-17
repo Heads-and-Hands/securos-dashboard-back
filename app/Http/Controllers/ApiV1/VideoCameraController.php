@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\ApiV1;
 
 use App\Http\Controllers\Controller;
-use App\Securos\SecurosCameras;
+use App\Jobs\SecurosCamerasJob;
 use App\Http\Resources\ApiV1\VideoCameras\{VideoCamerasCollection,
     VideoCamerasIpServerCollection,
     VideoCamerasShortCollection};
@@ -18,9 +18,7 @@ class VideoCameraController extends Controller
     public function index(VideoCameraFilter $filter): VideoCamerasCollection
     {
         if ((bool)request('updateCameras', false)) {
-            VideoCamera::query()->upsert(SecurosCameras::getCameras(), ['id'],
-            ['name', 'ip', 'type', 'ip_decode', 'ip_server', 'ip_server_decode',
-                'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at']);
+            dispatch(new SecurosCamerasJob());
         }
         $videoCameras = VideoCamera::filter($filter)->offsetPaginate();
 

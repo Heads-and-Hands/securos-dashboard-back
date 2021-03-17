@@ -130,7 +130,7 @@ class VideoCamera extends Model
         }
     }
 
-    public function setTypeAttribute($type)
+    public function setTypeAttribute($type): int
     {
         if ($type) {
             return $this->attributes['type'] = self::PTZ;
