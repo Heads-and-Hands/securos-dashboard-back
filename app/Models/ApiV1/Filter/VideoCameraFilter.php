@@ -48,7 +48,7 @@ class VideoCameraFilter extends QueryFilter
         if ($value) {
             $value = explode(',', $value);
             foreach ($value as $status) {
-                $statuses[] = array_flip(VideoCamera::$statuses)[$status];
+                $statuses[] = array_flip(VideoCamera::$statusesExploitation)[$status];
             }
             $this->builder->whereIn('status_exploitation', $statuses ?? []);
         }
