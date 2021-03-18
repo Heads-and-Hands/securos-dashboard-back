@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Custom\ExportReport\ExportToExcel;
+use App\Custom\ExportReport\ExportToPdf;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -35,6 +37,18 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $router = $this->app['router'];
+
+        $router->bind('exportReportClass', function ($value) {
+            if ($value === 'pdf') {
+                return new ExportToPdf;
+            }
+            if ($value === 'excel') {
+                return new ExportToExcel;
+            }
+
+        });
+
         $this->configureRateLimiting();
 
         $this->routes(function () {

@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\ApiV1\JobController;
-use App\Http\Controllers\ApiV1\VideoCameraController;
-use App\Http\Controllers\ApiV1\VideoCameraPassportController;
+use App\Http\Controllers\ApiV1\{JobController, ReportController, VideoCameraController, VideoCameraPassportController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +20,5 @@ Route::group(['prefix' => 'v1'], function () {
     Route::resource('cameras', VideoCameraController::class)->only('index');
     Route::resource('camera/passport', VideoCameraPassportController::class)
         ->only(['store', 'show', 'update', 'destroy']);
+    Route::resource('report/{exportReportClass?}', ReportController::class)->only(['index']);
 });

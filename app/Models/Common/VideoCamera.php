@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Models\Common;
 
+use Carbon\Carbon;
 use Carbon\Traits\Timestamp;
 use Illuminate\Database\Eloquent\{Factories\HasFactory, Model};
 
@@ -90,6 +91,20 @@ class VideoCamera extends Model
         'id', 'name', 'ip', 'type', 'ip_decode', 'ip_server', 'ip_server_decode',
         'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at'
     ];
+
+    public function getApprovalAtAttribute($date)
+    {
+        if ($date) {
+            return Carbon::parse($date)->toIso8601String();
+        }
+    }
+
+    public function getCreationAtAttribute($date)
+    {
+        if ($date) {
+            return Carbon::parse($date)->toIso8601String();
+        }
+    }
 
     public function getTypeAttribute($type): string
     {

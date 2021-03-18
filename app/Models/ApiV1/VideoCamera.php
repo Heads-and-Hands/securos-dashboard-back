@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace App\Models\ApiV1;
 
 use App\Http\Resources\ApiV1\VideoCameras\VideoCamerasStatisticResource;
-use App\Models\ApiV1\Filter\{VideoCameraFilter, VideoCameraIpServerFilter, VideoCameraShortFilter};
+use App\Models\ApiV1\Filter\{VideoCameraFilter,
+    VideoCameraIpServerFilter,
+    VideoCameraReportFilter,
+    VideoCameraShortFilter};
 use App\Models\Common\VideoCamera as VC;
 use Illuminate\{Database\Eloquent\Builder, Support\Facades\DB};
 
@@ -52,6 +55,11 @@ class VideoCamera extends VC
     }
 
     public function scopeIpServerFilter(Builder $query, VideoCameraIpServerFilter $filter): void
+    {
+        $filter->apply($query);
+    }
+
+    public function scopeReportFilter(Builder $query, VideoCameraReportFilter $filter): void
     {
         $filter->apply($query);
     }
