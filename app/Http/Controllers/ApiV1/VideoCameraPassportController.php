@@ -6,6 +6,7 @@ namespace App\Http\Controllers\ApiV1;
 use App\Securos\SecurosCameraPassport;
 use App\Http\{Controllers\Controller,
     Requests\ApiV1\VideoCamera\VideoCameraPassportRequest,
+    Resources\ApiV1\Passports\PassportsResource,
     Resources\ApiV1\VideoCameras\VideoCameraResource};
 use App\Models\ApiV1\VideoCamera;
 
@@ -28,9 +29,9 @@ class VideoCameraPassportController extends Controller
         return new VideoCameraResource($videoCamera);
     }
 
-    public function show(VideoCamera $passport): VideoCameraResource
+    public function show(VideoCamera $passport): PassportsResource
     {
-        return new VideoCameraResource($passport);
+        return new PassportsResource($passport);
     }
 
     public function update(VideoCameraPassportRequest $request, VideoCamera $passport): VideoCameraResource
