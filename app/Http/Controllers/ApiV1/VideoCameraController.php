@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\ApiV1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ApiV1\Passports\UnverifiedPassportCollection;
 use App\Jobs\SecurosCamerasJob;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\ApiV1\VideoCameras\{VideoCamerasCollection,
@@ -42,8 +43,10 @@ class VideoCameraController extends Controller
         return new VideoCamerasIpServerCollection($ipServer);
     }
 
-    public function checkUnverifiedPassport(): JsonResponse
+    public function checkUnverifiedPassport(): UnverifiedPassportCollection
     {
-        return response()->json(['unverifiedPassportsCount' => 4], 200);
+        $videoCameras = VideoCamera::getUnverifiedPassport();
+
+        return new UnverifiedPassportCollection($videoCameras);
     }
 }

@@ -13,7 +13,7 @@ class VideoCamerasShortResource extends JsonResource
         /** @var $this VideoCamera */
         return [
             'id' => $this->id,
-            'name' => $this-> name
+            'name' => $this->name
         ];
     }
 }

@@ -30,6 +30,13 @@ class VideoCamera extends VC
         return $response;
     }
 
+    public static function getUnverifiedPassport()
+    {
+        return self::query()->select('id', 'name', 'type', 'status')
+            ->where('status', self::NOT_VERIFIED)
+            ->offsetPaginate();
+    }
+
     public static function getShortCameras($filter)
     {
         return self::query()->select('id', 'name')
