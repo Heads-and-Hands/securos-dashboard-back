@@ -22,6 +22,14 @@ class VideoCameraReportFilter extends QueryFilter
         }
     }
 
+    public function notIds($value): void
+    {
+        if ($value) {
+            $value = explode(',', $value);
+            $this->builder->whereNotIn('id', $value);
+        }
+    }
+
     public function rangeOfDate($value): void
     {
         if ($value) {
