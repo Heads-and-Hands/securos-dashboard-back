@@ -18,7 +18,7 @@ class ReportController extends Controller
         if ($exportReport) {
             return (new ExportReport($exportReport, $videoCamera))->generateDocument();
         }
-dd(12);
+
         return 1;
     }
 }
