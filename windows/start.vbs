@@ -19,11 +19,11 @@ redisPath = updatePath(rawBasePath & "\lib\redis\redis-server.exe")
 Shell.Run redisPath, 0, False
 
 'WScript.Echo "Starting PHP...\n"
-phpCgiPath = updatePath(rawBasePath & "\lib\php7.2\php-cgi.exe")
+phpCgiPath = updatePath(rawBasePath & "\lib\php7.4\php-cgi.exe")
 Shell.Run phpCgiPath & " -b 127.0.0.1:9000", 2, False
 
 'WScript.Echo "Starting queue...\n"
-Shell.Run phpPath & " " & projectPath & "\artisan queue:work --queue=images", 2, False
+'Shell.Run phpPath & " " & projectPath & "\artisan queue:work --queue=images", 2, False
 
 Function updatePath(ByVal path)
 

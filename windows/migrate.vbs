@@ -7,7 +7,7 @@ rawBasePath = projectFolder.ParentFolder.Path
 
 projectPath = updatePath(rawProjectPath)
 basePath = updatePath(rawBasePath)
-phpPath = updatePath(rawBasePath & "\lib\php7.2\php.exe")
+phpPath = updatePath(rawBasePath & "\lib\php7.4\php.exe")
 
 Set Shell= WScript.CreateObject("WScript.Shell")
 'apply migrations

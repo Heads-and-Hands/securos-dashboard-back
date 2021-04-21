@@ -10,7 +10,7 @@ basePath = updatePath(rawBasePath)
 Set Shell= WScript.CreateObject("WScript.Shell")
 
 'generate application key
-phpPath = updatePath(rawBasePath & "\lib\php7.2\php.exe")
+phpPath = updatePath(rawBasePath & "\lib\php7.4\php.exe")
 Shell.Run "cmd /c cd " & projectPath & " && " & phpPath & " artisan key:generate", 0, true
 
 MsgBox "Key is generated"

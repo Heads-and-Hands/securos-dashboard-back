@@ -71,10 +71,10 @@ class VideoCamera extends Model
     public const DEFECT = 40;
 
     static public array $statuses = [
-        self::REGULAR_CAMERA  => 'regularCamera',
-        self::NOT_IN_OPERATION => 'notInOperation',
+        self::REGULAR_CAMERA  => 'ok',
+        self::NOT_IN_OPERATION => 'notworking',
         self::UNKNOWN => 'unknown',
-        self::DEFECT => 'defect',
+        self::DEFECT => 'problem',
     ];
 
     public const INTRODUCED = 10;
