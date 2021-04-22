@@ -1,0 +1,42 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Securos;
+
+
+use Carbon\Carbon;
+
+class SecurosMetrics extends BaseRequest
+{
+    protected const METRICS_URL = 'api/v1/metrics';
+
+
+    public static function getMetrics(
+        string $tag,
+        array $cameraIds,
+        \DateTimeInterface $startDateTime,
+        \DateTimeInterface $endDateTime)
+    {
+        $params = [
+            'tag' => $tag,
+            'cams' => implode(",", $cameraIds),
+            'start' => self::formatDateTimeInput($startDateTime),
+            'end' => self::formatDateTimeInput($endDateTime)
+        ];
+        $data = parent::get(self::METRICS_URL, $params);
+        return json_decode($data);
+        //return self::formatMetricsOutput($metrics);
+    }
+
+    private static function formatDateTimeInput(\DateTimeInterface $dateTime): string
+    {
+        return $dateTime->format('Ymd') . 'T' . $dateTime->format('His');
+    }
+
+    /*
+    protected static function formatMetricsOutput($metrics): array
+    {
+        return $metrics;
+    }*/
+
+}
