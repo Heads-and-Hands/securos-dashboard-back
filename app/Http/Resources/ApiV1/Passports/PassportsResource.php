@@ -19,7 +19,12 @@ class PassportsResource extends JsonResource
             'ip' => $this->ip,
             'ipServer' => $this->ip_server,
             'status' => $this->status,
-            'passport' => $this->passport,
+            'passport' => is_null($this->passport) ? null : [
+                'width' => $this->width,
+                'height' => $this->height,
+                'fps' => $this->fps,
+                'kbps' => $this->kbps,
+            ],
             'statusExploitation' => $this->status_exploitation,
             'approvalAt' => $this->approval_at,
             'creationAt' => $this->creation_at,

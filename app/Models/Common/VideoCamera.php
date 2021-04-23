@@ -92,6 +92,45 @@ class VideoCamera extends Model
         'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at'
     ];
 
+    protected $appends = ['width', 'height', 'fps', 'kbps'];
+
+    private $width;
+    private $height;
+    private $fps;
+    private $kbps;
+
+    public function getWidthAttribute() {
+        return $this->width;
+    }
+
+    public function setWidthAttribute($value) {
+        $this->width = $value;
+    }
+
+    public function getHeightAttribute() {
+        return $this->height;
+    }
+
+    public function setHeightAttribute($value) {
+        $this->height = $value;
+    }
+
+    public function getFpsAttribute() {
+        return $this->fps;
+    }
+
+    public function setFpsAttribute($value) {
+        $this->fps = $value;
+    }
+    public function getKbpsAttribute() {
+        return $this->kbps;
+    }
+
+    public function setKbpsAttribute($value) {
+        $this->kbps = $value;
+    }
+
+
     public function getApprovalAtAttribute($date)
     {
         if ($date) {
@@ -138,12 +177,14 @@ class VideoCamera extends Model
         $this->attributes['ip_server_decode'] = $ip;
     }
 
+    /*
     public function getPassportAttribute($passport)
     {
         if ($passport) {
             return json_decode($passport);
         }
-    }
+    }*/
+
 
     public function setTypeAttribute($type): int
     {

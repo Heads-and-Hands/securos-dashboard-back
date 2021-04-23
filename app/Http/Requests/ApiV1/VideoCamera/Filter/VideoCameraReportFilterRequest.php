@@ -12,6 +12,7 @@ class VideoCameraReportFilterRequest extends FormRequest
         return [
             'ids' => ['string'],
             'rangeOfDate' => ['string'],
+            'timezoneOffset' => ['integer']
         ];
     }
 }

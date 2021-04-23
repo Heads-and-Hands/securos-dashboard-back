@@ -27,6 +27,7 @@ class SecurosCameras extends BaseRequest
                 'id' => $camera->id,
                 'ip' => $camera->ip ?: '0.0.0.0',
                 'name' => $camera->name,
+                'passport' => $camera->passport ?? null,
                 'type' => self::getType($camera->ptz),
                 'ip_decode' => self::getIpDecode($camera->ip),
                 'ip_server' => $camera->server ?: '0.0.0.0',
