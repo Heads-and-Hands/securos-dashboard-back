@@ -47,7 +47,7 @@ class VideoCameraPassportController extends Controller
         }
         else {
             self::assignPassportParamsFromSecurosApi($passport);
-            return new PassportsResource($passport);
+            return new VideoCameraResource($passport);
         }
     }
 
