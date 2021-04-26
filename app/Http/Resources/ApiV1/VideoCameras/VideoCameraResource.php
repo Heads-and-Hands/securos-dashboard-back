@@ -27,6 +27,8 @@ class VideoCameraResource extends BaseResource
             'statusExploitation' => $this->status_exploitation,
             'approvalAt' => $this->approval_at,
             'creationAt' => $this->creation_at,
+            'approved' => $this->approved,
+            'update_time' => $this->update_time
         ];
     }
 }

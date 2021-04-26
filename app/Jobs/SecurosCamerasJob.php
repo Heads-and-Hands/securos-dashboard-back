@@ -35,7 +35,7 @@ class SecurosCamerasJob implements ShouldQueue
         VideoCamera::whereNotIn('id', $cameraIds)->delete();
         VideoCamera::query()->upsert($cameras, ['id'],
             ['name', 'ip', 'type', 'ip_decode', 'ip_server', 'ip_server_decode',
-                'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at']);
+                'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at', 'approved', 'update_time']);
     }
 
 }

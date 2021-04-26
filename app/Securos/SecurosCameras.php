@@ -36,6 +36,8 @@ class SecurosCameras extends BaseRequest
                 'status' => self::getStatus($camera->status),
                 'approval_at' => isset($camera->approval_time) ? Carbon::parse($camera->approval_time) : null,
                 'creation_at' => isset($camera->creation_time) ? Carbon::parse($camera->creation_time) : null,
+                'approved' => $camera->approved ?? false,
+                'update_time' => isset($camera->update_time) ? Carbon::parse($camera->update_time) : null,
             ];
         }
 
@@ -59,13 +61,10 @@ class SecurosCameras extends BaseRequest
 
     public static function getStatusExploitation($camera): int
     {
-        if (isset($camera->creation_time, $camera->approval_time)) {
-            return VideoCamera::NOT_VERIFIED;
+        if (isset($camera->update_time)) {
+            return $camera->approved ? VideoCamera::INTRODUCED : VideoCamera::NOT_VERIFIED;
         }
-        if (isset($camera->creation_time) && !isset($camera->approval_time)) {
-            return VideoCamera::INTRODUCED;
-        }
-        if (!isset($camera->creation_time)) {
+        else {
             return VideoCamera::NOT_FILLED;
         }
     }

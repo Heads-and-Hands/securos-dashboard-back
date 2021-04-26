@@ -89,7 +89,7 @@ class VideoCamera extends Model
 
     protected $fillable = [
         'id', 'name', 'ip', 'type', 'ip_decode', 'ip_server', 'ip_server_decode',
-        'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at'
+        'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at', 'approved', 'update_time'
     ];
 
     protected $appends = ['width', 'height', 'fps', 'kbps'];
@@ -145,6 +145,13 @@ class VideoCamera extends Model
         }
     }
 
+    public function getUpdateTimeAttribute($date)
+    {
+        if ($date) {
+            return Carbon::parse($date)->toIso8601String();
+        }
+    }
+
     public function getTypeAttribute($type): string
     {
         return static::$types[$type];
@@ -176,15 +183,6 @@ class VideoCamera extends Model
         $ip = sprintf('%u', ip2long($ip));
         $this->attributes['ip_server_decode'] = $ip;
     }
-
-    /*
-    public function getPassportAttribute($passport)
-    {
-        if ($passport) {
-            return json_decode($passport);
-        }
-    }*/
-
 
     public function setTypeAttribute($type): int
     {
