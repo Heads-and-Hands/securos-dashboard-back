@@ -17,6 +17,20 @@ class VideoCameraPassportController extends Controller
     {
         $videoCamera = VideoCamera::findOrFail($request->id);
 
+        // Раскомментировать:
+
+        /*
+        $response = SecurosCameraPassport::createCameraPassport($request->all());
+        if (isset($response->status) && $response->status > 300) {
+            return response()->json(['message' => 'Securos API Response: ' . $response->message], $response->status);
+        }
+        else {
+            self::loadPassportParamsFromSecurosApi($passport);
+            return new VideoCameraResource($passport);
+        }*/
+
+        // Удалить до конца метода:
+
 //        $response = SecurosCameraPassport::createCameraPassport($request->all());
 //
 //        if (isset($response->status) && $response->status > 300) {

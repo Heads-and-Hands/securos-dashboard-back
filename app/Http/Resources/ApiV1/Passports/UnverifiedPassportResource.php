@@ -15,6 +15,7 @@ class UnverifiedPassportResource extends BaseResource
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
+            'update_time' => $this->update_time,
         ];
     }
 }

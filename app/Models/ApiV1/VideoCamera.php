@@ -32,8 +32,8 @@ class VideoCamera extends VC
 
     public static function getUnverifiedPassport()
     {
-        return self::query()->select('id', 'name', 'type', 'status')
-            ->where('status', self::NOT_VERIFIED)
+        return self::query()->select('id', 'name', 'type', 'status', 'update_time')
+            ->where('status_exploitation', self::NOT_VERIFIED)
             ->offsetPaginate();
     }
 
