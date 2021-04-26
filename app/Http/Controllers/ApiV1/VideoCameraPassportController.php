@@ -33,7 +33,7 @@ class VideoCameraPassportController extends Controller
     public function show(VideoCamera $passport): PassportsResource
     {
         if (!is_null($passport->passport)) {
-            self::assignPassportParamsFromSecurosApi($passport);
+            self::loadPassportParamsFromSecurosApi($passport);
         }
 
         return new PassportsResource($passport);
@@ -46,7 +46,7 @@ class VideoCameraPassportController extends Controller
             return response()->json(['message' => 'Securos API Response: ' . $response->message], $response->status);
         }
         else {
-            self::assignPassportParamsFromSecurosApi($passport);
+            self::loadPassportParamsFromSecurosApi($passport);
             return new VideoCameraResource($passport);
         }
     }
@@ -66,7 +66,7 @@ class VideoCameraPassportController extends Controller
         return new VideoCameraResource($passport);
     }
 
-    private static function assignPassportParamsFromSecurosApi(VideoCamera $passport) {
+    private static function loadPassportParamsFromSecurosApi(VideoCamera $passport) {
         $data = SecurosCameraPassport::getCameraPassport($passport->passport);
         if (isset($data->stream)) {
             $passport->width =  $data->stream->width;
