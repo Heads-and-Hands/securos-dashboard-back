@@ -40,12 +40,20 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        /*
+        'api' => [
+            'driver' => 'dashboard',
+            'provider' => 'dashboard',
+            'hash' => false,
+        ],
+        */
 
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
         ],
+
     ],
 
     /*
@@ -70,6 +78,12 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        /*
+        'dashboard' => [
+            'driver' => 'dashboard',
+            'model' => App\Models\User::class,
+        ],
+        */
 
         // 'users' => [
         //     'driver' => 'database',

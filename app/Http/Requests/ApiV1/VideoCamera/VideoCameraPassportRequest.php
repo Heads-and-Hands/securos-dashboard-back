@@ -10,7 +10,7 @@ class VideoCameraPassportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['integer',],
+            'id' => ['integer'],
             'stream' => ['array'],
             'stream.fps' => ['integer', 'required'],
             'stream.kbps' => ['integer', 'required'],
