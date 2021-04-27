@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\ApiV1;
 
 use App\Securos\SecurosCameraPassport;
+use App\Securos\SecurosCameras;
+use Carbon\Carbon;
 use App\Http\{Controllers\Controller,
     Requests\ApiV1\VideoCamera\VideoCameraPassportRequest,
     Resources\ApiV1\Passports\PassportsResource,
@@ -13,80 +15,82 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class VideoCameraPassportController extends Controller
 {
-    public function store(VideoCameraPassportRequest $request)
+    public function store(VideoCameraPassportRequest $request, VideoCamera $camera)
     {
-        $videoCamera = VideoCamera::findOrFail($request->id);
-
-        // Раскомментировать:
-
-        /*
-        $response = SecurosCameraPassport::createCameraPassport($request->all());
+        $response = SecurosCameraPassport::createCameraPassport($camera->id, $request->stream);
         if (isset($response->status) && $response->status > 300) {
-            return response()->json(['message' => 'Securos API Response: ' . $response->message], $response->status);
+            return response()->json(['message' => $response->message], $response->status);
         }
-        else {
-            self::loadPassportParamsFromSecurosApi($passport);
-            return new VideoCameraResource($passport);
-        }*/
-
-        // Удалить до конца метода:
-
-//        $response = SecurosCameraPassport::createCameraPassport($request->all());
-//
-//        if (isset($response->status) && $response->status > 300) {
-//            return response()->json(['message' => $response->message], $response->status);
-//        }
-
-        $videoCamera->update([
-            'passport' => $request->stream
-        ]);
-
-        return new VideoCameraResource($videoCamera);
+        if (isset($response->update_time, $response->approved, $response->passport)) {
+            $camera->update_time = SecurosCameras::formatDateTime($response->update_time);
+            $camera->approved = $response->approved;
+            $camera->passport = $response->passport;
+            $camera->status_exploitation = SecurosCameras::getStatusExploitation($camera);
+            $camera->save();
+        }
+        self::loadPassportParamsFromSecurosApi($camera);
+        return new VideoCameraResource($camera);
     }
 
-    public function show(VideoCamera $passport): PassportsResource
+    public function show(VideoCamera $camera): PassportsResource
     {
-        if (!is_null($passport->passport)) {
-            self::loadPassportParamsFromSecurosApi($passport);
+        if (!is_null($camera->passport)) {
+            self::loadPassportParamsFromSecurosApi($camera);
         }
-
-        return new PassportsResource($passport);
+        return new PassportsResource($camera);
     }
 
-    public function update(VideoCameraPassportRequest $request, VideoCamera $passport)
+    public function update(VideoCameraPassportRequest $request, VideoCamera $camera)
     {
-        $response = SecurosCameraPassport::updateCameraPassport($passport->id, $request->stream);
+        $response = SecurosCameraPassport::updateCameraPassport($camera->id, $request->stream);
         if (isset($response->status) && $response->status > 300) {
-            return response()->json(['message' => 'Securos API Response: ' . $response->message], $response->status);
+            return response()->json(['message' => $response->message], $response->status);
         }
-        else {
-            self::loadPassportParamsFromSecurosApi($passport);
-            return new VideoCameraResource($passport);
+        if (isset($response->update_time)) {
+            $camera->update_time = SecurosCameras::formatDateTime($response->update_time);
+            $camera->save();
         }
+        self::loadPassportParamsFromSecurosApi($camera);
+        return new VideoCameraResource($camera);
     }
 
-    public function destroy(VideoCamera $passport)
+    public function approve(VideoCamera $camera)
     {
-//        $response = SecurosCameraPassport::deleteCameraPassport($passport->id);
-//
-//        if (isset($response->status) && $response->status > 300) {
-//            return response()->json(['message' => $response->message], $response->status);
-//        }
-
-        $passport->update([
-            'passport' => null
-        ]);
-
-        return new VideoCameraResource($passport);
+        $response = SecurosCameraPassport::approveCameraPassport($camera->id);
+        if (isset($response->status) && $response->status > 300) {
+            return response()->json(['message' => $response->message], $response->status);
+        }
+        if (isset($response->update_time, $response->approved)) {
+            $camera->update_time = SecurosCameras::formatDateTime($response->update_time);
+            $camera->approved = $response->approved;
+            $camera->status_exploitation = SecurosCameras::getStatusExploitation($camera);
+            $camera->save();
+        }
+        self::loadPassportParamsFromSecurosApi($camera);
+        return new VideoCameraResource($camera);
     }
 
-    private static function loadPassportParamsFromSecurosApi(VideoCamera $passport) {
-        $data = SecurosCameraPassport::getCameraPassport($passport->passport);
+    public function destroy(VideoCamera $camera)
+    {
+        $response = SecurosCameraPassport::deleteCameraPassport($camera->id);
+        if (isset($response->status) && $response->status > 300) {
+            return response()->json(['message' => $response->message], $response->status);
+        }
+        $camera->approved = false;
+        $camera->passport = null;
+        $camera->update_time = null;
+        $camera->status_exploitation = VideoCamera::NOT_FILLED;
+        $camera->save();
+        return new VideoCameraResource($camera);
+    }
+
+    private static function loadPassportParamsFromSecurosApi(VideoCamera $camera) {
+        $data = SecurosCameraPassport::getCameraPassport($camera->passport);
         if (isset($data->stream)) {
-            $passport->width =  $data->stream->width;
-            $passport->height = $data->stream->height;
-            $passport->kbps = $data->stream->kbps;
-            $passport->fps = $data->stream->fps;
+            $camera->width =  $data->stream->width;
+            $camera->height = $data->stream->height;
+            $camera->kbps = $data->stream->kbps;
+            $camera->fps = $data->stream->fps;
         }
     }
 }

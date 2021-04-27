@@ -8,6 +8,7 @@ class SecurosCameraPassport extends BaseRequest
     protected const CAMERAS_PASSPORT_CREATE_URL = 'api/v1/passports';
     protected const CAMERAS_PASSPORT_UPDATE_URL = 'api/v1/passports/';
     protected const CAMERAS_PASSPORT_DELETE_URL = 'api/v1/passports/';
+    protected const CAMERAS_PASSPORT_APPROVE_URL = 'api/v1/passports/';
 
     public static function getCameraPassport(string $url)
     {
@@ -19,25 +20,16 @@ class SecurosCameraPassport extends BaseRequest
         return json_decode($data);
     }
 
-    public static function createCameraPassport($passport)
+    public static function createCameraPassport(int $passportId, $passportParams)
     {
-        $data = parent::post(self::CAMERAS_PASSPORT_CREATE_URL, $passport);
-
+        $params = self::prepareParams($passportId, $passportParams);
+        $data = parent::post(self::CAMERAS_PASSPORT_CREATE_URL, $params);
         return json_decode($data);
     }
 
-    public static function deleteCameraPassport($passportId)
+    private static function prepareParams(int $passportId, $passportParams)
     {
-        $url = self::CAMERAS_PASSPORT_DELETE_URL. $passportId;
-
-        $data = parent::delete($url);
-
-        return json_decode($data);
-    }
-
-    public static function updateCameraPassport(int $passportId, $passportParams)
-    {
-        $params = [
+        return [
             'id' => (string) $passportId,
             'stream' => [
                 'fps' => intval($passportParams['fps']),
@@ -46,9 +38,26 @@ class SecurosCameraPassport extends BaseRequest
                 'height' => intval($passportParams['height'])
             ]
         ];
+    }
 
+    public static function deleteCameraPassport($passportId)
+    {
+        $url = self::CAMERAS_PASSPORT_DELETE_URL. $passportId;
+        $data = parent::delete($url);
+        return json_decode($data);
+    }
+
+    public static function approveCameraPassport($passportId)
+    {
+        $url = self::CAMERAS_PASSPORT_APPROVE_URL. $passportId;
+        $data = parent::patch($url);
+        return json_decode($data);
+    }
+
+    public static function updateCameraPassport(int $passportId, $passportParams)
+    {
+        $params = self::prepareParams($passportId, $passportParams);
         $data = parent::put(self::CAMERAS_PASSPORT_UPDATE_URL . $passportId, $params);
-
         return json_decode($data);
     }
 }

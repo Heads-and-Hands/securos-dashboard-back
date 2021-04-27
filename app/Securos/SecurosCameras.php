@@ -32,12 +32,12 @@ class SecurosCameras extends BaseRequest
                 'ip_decode' => self::getIpDecode($camera->ip),
                 'ip_server' => $camera->server ?: '0.0.0.0',
                 'ip_server_decode' => self::getIpDecode($camera->server),
-                'status_exploitation' => self::getStatusExploitation($camera), #TODO по доки с их апи ничего не понятно
+                'status_exploitation' => self::getStatusExploitation($camera),
                 'status' => self::getStatus($camera->status),
-                'approval_at' => isset($camera->approval_time) ? Carbon::parse($camera->approval_time) : null,
-                'creation_at' => isset($camera->creation_time) ? Carbon::parse($camera->creation_time) : null,
+                'approval_at' => isset($camera->approval_time) ? self::formatDateTime($camera->approval_time) : null,
+                'creation_at' => isset($camera->creation_time) ? self::formatDateTime($camera->creation_time) : null,
                 'approved' => $camera->approved ?? false,
-                'update_time' => isset($camera->update_time) ? Carbon::parse($camera->update_time) : null,
+                'update_time' => isset($camera->update_time) ? self::formatDateTime($camera->update_time) : null,
             ];
         }
 
@@ -67,5 +67,10 @@ class SecurosCameras extends BaseRequest
         else {
             return VideoCamera::NOT_FILLED;
         }
+    }
+
+    public static function formatDateTime($dateTime)
+    {
+        return Carbon::parse($dateTime);
     }
 }

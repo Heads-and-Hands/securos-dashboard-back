@@ -192,14 +192,6 @@ class VideoCamera extends Model
         return $this->attributes['type'] = self::NOT_A_PTZ;
     }
 
-    public function setPassportAttribute($passport)
-    {
-        if ($passport) {
-            return $this->attributes['passport'] = json_encode($passport);
-        }
-        return $this->attributes['passport'] = null;
-    }
-
     public function getStatusExploitationAttribute($status): string
     {
         return static::$statusesExploitation[$status];
