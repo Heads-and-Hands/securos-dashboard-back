@@ -64,7 +64,6 @@ class VideoCamera extends Model
         self::NOT_A_PTZ => 'notPTZ',
     ];
 
-    #TODO упорядочить список после того как утвердят тз
     public const REGULAR_CAMERA = 10;
     public const NOT_IN_OPERATION = 20;
     public const UNKNOWN = 30;
@@ -92,12 +91,21 @@ class VideoCamera extends Model
         'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at', 'approved', 'update_time'
     ];
 
-    protected $appends = ['width', 'height', 'fps', 'kbps'];
+    protected $appends = ['width', 'height', 'fps', 'kbps', 'image'];
 
     private $width;
     private $height;
     private $fps;
     private $kbps;
+    private $image;
+
+    public function getImageAttribute() {
+        return $this->image;
+    }
+
+    public function setImageAttribute($value) {
+        $this->image = $value;
+    }
 
     public function getWidthAttribute() {
         return $this->width;

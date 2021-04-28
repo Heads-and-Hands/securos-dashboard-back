@@ -23,6 +23,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('logout', [UserController::class, 'logout']);
 
     Route::group(['middleware' => 'auth.dashboard'], function () {
+        #TODO: Удалить закомментированное
         //Route::get('test', [UserController::class, 'test']);
         Route::get('check/job', [JobController::class, 'checkJob']);
         Route::get('cameras/short', [VideoCameraController::class, 'camerasShort']);

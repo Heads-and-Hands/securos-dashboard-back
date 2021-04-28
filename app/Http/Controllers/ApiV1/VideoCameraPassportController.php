@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\ApiV1;
 
 use App\Securos\SecurosCameraPassport;
+use App\Securos\SecurosCameraPhoto;
 use App\Securos\SecurosCameras;
 use Carbon\Carbon;
 use App\Http\{Controllers\Controller,
@@ -37,6 +38,7 @@ class VideoCameraPassportController extends Controller
         if (!is_null($camera->passport)) {
             self::loadPassportParamsFromSecurosApi($camera);
         }
+        $camera->image = SecurosCameraPhoto::getPhoto($camera->id);
         return new PassportsResource($camera);
     }
 
@@ -84,7 +86,8 @@ class VideoCameraPassportController extends Controller
         return new VideoCameraResource($camera);
     }
 
-    private static function loadPassportParamsFromSecurosApi(VideoCamera $camera) {
+    private static function loadPassportParamsFromSecurosApi(VideoCamera $camera)
+    {
         $data = SecurosCameraPassport::getCameraPassport($camera->passport);
         if (isset($data->stream)) {
             $camera->width =  $data->stream->width;

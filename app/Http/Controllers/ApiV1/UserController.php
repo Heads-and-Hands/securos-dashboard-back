@@ -33,6 +33,7 @@ class UserController extends Controller
         return response()->json(['message' => 'OK'], 200);
     }
 
+    #TODO: Удалить закомментированное
     /*
     public function test(Request $request)
     {

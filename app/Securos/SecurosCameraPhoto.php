@@ -35,8 +35,7 @@ class SecurosCameraPhoto extends BaseRequest
             return $client->request($type, $url,
                 [
                     'json' => $params,
-                    'headers' => $headers,
-                    'auth' => [1, 1] #TODO будет авторизация
+                    'headers' => array_merge($headers, SecurosUser::getImageAuthHeader()),
                 ]
             );
         } catch (GuzzleException $e) {
