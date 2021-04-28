@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiV1\{JobController, ReportController, VideoCameraController, VideoCameraPassportController};
+use App\Http\Controllers\ApiV1\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use \Symfony\Component\HttpKernel\Exception\HttpException;
@@ -40,13 +41,21 @@ Route::get('/logout', function(Request $request) {
     return 'OK';
 })->name('logout');*/
 
+/*
 Route::middleware('auth.dashboard')->get('/test', function (Request $request) {
     $response['user'] = [
         'name' => DashboardUser::getName(),
         'key' => DashboardUser::getKey(),
     ];
     var_dump($response);
-})->name('test');
+})->name('test');*/
+
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('login', [UserController::class, 'login']);
+    Route::get('logout', [UserController::class, 'logout']);
+    Route::get('test', [UserController::class, 'test'])->middleware('auth.dashboard');
+});
+
 
 Route::group(['prefix' => 'v1'], function () {
     Route::get('check/job', [JobController::class, 'checkJob']);
@@ -59,6 +68,5 @@ Route::group(['prefix' => 'v1'], function () {
     Route::put('camera/passport/{camera}', [VideoCameraPassportController::class, 'update']);
     Route::patch('camera/passport/{camera}', [VideoCameraPassportController::class, 'approve']);
     Route::delete('camera/passport/{camera}', [VideoCameraPassportController::class, 'destroy']);
-
     Route::resource('report/{exportReportClass?}', ReportController::class)->only(['index']);
 });

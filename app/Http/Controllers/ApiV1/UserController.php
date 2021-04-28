@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ApiV1;
 
 
 use App\Http\Controllers\Controller;
+use App\Securos\SecurosUser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,4 +24,14 @@ class UserController extends Controller
         $request->session()->flush();
         return response()->json(['message' => 'OK'], 200);
     }
+
+    public function test(Request $request)
+    {
+        $response['user'] = [
+            'name' => DashboardUser::getName(),
+            'key' => DashboardUser::getKey(),
+        ];
+        return response()->json(SecurosUser::getAuthHeader(), 200);
+    }
+
 }
