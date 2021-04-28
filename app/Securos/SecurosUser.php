@@ -6,6 +6,8 @@ namespace App\Securos;
 
 class SecurosUser
 {
+    protected const CHECK_AUTH_URL = 'api/v1/cameras';
+
     private static $authKey;
 
     private function __construct() {}
@@ -27,6 +29,12 @@ class SecurosUser
                 'Authorization' => 'Basic ' . self::$authKey
             ];
         }
+    }
+
+    public static function checkAuthKey(string $key)
+    {
+        $response = json_decode(BaseRequest::get(self::CHECK_AUTH_URL));
+        return (isset($response->status) && ($response->status == 200));
     }
 
 }

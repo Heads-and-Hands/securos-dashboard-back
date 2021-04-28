@@ -5,18 +5,26 @@ namespace App\Http\Controllers\ApiV1;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ApiV1\LoginRequest;
+use App\Dashboard\Auth\DashboardUser;
 use App\Securos\SecurosUser;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        #TODO проверка логина и пароля через SecurosAPI
-        $request->session()->put('user_name', $request->input('login'));
-        $request->session()->put('user_key', $request->input('key'));
-        return response()->json(['message' => 'OK'], 200);
+        $login = $request->input('login');
+        $key = $request->input('key');
+
+        if (SecurosUser::checkAuthKey($key)) {
+            $request->session()->put('user_name', $login);
+            $request->session()->put('user_key', $key);
+            return response()->json(['message' => 'OK'], 200);
+        }
+        else {
+            return response()->json(['message' => 'Incorrect login:password'], 403);
+        }
     }
 
     public function logout(Request $request)
@@ -25,6 +33,7 @@ class UserController extends Controller
         return response()->json(['message' => 'OK'], 200);
     }
 
+    /*
     public function test(Request $request)
     {
         $response['user'] = [
@@ -32,6 +41,6 @@ class UserController extends Controller
             'key' => DashboardUser::getKey(),
         ];
         return response()->json(SecurosUser::getAuthHeader(), 200);
-    }
+    }*/
 
 }

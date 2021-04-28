@@ -10,12 +10,15 @@ class DashboardAuth
 {
     public function handle($request, Closure $next)
     {
-        if ($request->session()->has('user_key')) {
-            SecurosUser::setAuthKey($request->session()->get('user_key'));
+        if (env('AUTH_ON', false)) {
+            if ($request->session()->has('user_key')) {
+                SecurosUser::setAuthKey($request->session()->get('user_key'));
+            }
+            else {
+                return response()->json(['message' => 'User Unauthorized'], 401);;
+            }
         }
-        else {
-            return response()->json(['message' => 'User Unauthorized'], 401);;
-        }
+
         return $next($request);
     }
 }

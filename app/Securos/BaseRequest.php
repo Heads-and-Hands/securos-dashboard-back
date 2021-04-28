@@ -12,14 +12,18 @@ class BaseRequest extends Request
     {
         $apiUrl = env('SECUROS_DASHBOARD_URL');
 
-        return parent::request($type, $apiUrl . $url, $params, $headers);
+        return parent::request(
+            $type, $apiUrl . $url, $params,
+            array_merge($headers, SecurosUser::getAuthHeader()));
     }
 
     protected static function requestRaw($type, $url, $params = [], array $headers = [])
     {
         $apiUrl = env('SECUROS_DASHBOARD_URL');
 
-        return parent::requestRaw($type, $apiUrl . $url, $params, $headers);
+        return parent::requestRaw(
+            $type, $apiUrl . $url, $params,
+            array_merge($headers, SecurosUser::getAuthHeader()));
     }
 
     public static function get($url, array $params = [], array $headers = [])
