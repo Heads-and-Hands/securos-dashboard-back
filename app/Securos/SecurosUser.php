@@ -36,6 +36,8 @@ class SecurosUser
         #TODO: Сделать единую авторизацию на 2 API, когда будет единая тестовая учетка
         //return self::getAuthHeader();
 
+        #TODO Убрать закомментированное
+
         return [
             'Authorization' => 'Basic MTox'
         ];
@@ -44,8 +46,8 @@ class SecurosUser
 
     public static function checkAuthKey(string $key)
     {
-        #TODO Убрать!!!
-        if ($key == 'MTox') return false;
+        #TODO Убрать закомментированное
+        //if ($key == 'MTox') return false;
 
         $response = json_decode(BaseRequest::get(self::CHECK_AUTH_URL));
         return (isset($response->status) && ($response->status == 200));
