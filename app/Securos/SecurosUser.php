@@ -33,22 +33,12 @@ class SecurosUser
 
     public static function getImageAuthHeader()
     {
-        #TODO: Сделать единую авторизацию на 2 API, когда будет единая тестовая учетка
-        //return self::getAuthHeader();
-
-        #TODO Убрать закомментированное
-
-        return [
-            'Authorization' => 'Basic MTox'
-        ];
-
+        return self::getAuthHeader();
     }
 
     public static function checkAuthKey(string $key)
     {
-        #TODO Убрать закомментированное
-        //if ($key == 'MTox') return false;
-
+        self::$authKey = $key;
         $response = json_decode(BaseRequest::get(self::CHECK_AUTH_URL));
         return (isset($response->status) && ($response->status == 200));
     }

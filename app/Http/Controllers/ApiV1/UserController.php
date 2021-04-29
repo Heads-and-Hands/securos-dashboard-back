@@ -32,16 +32,4 @@ class UserController extends Controller
         $request->session()->flush();
         return response()->json(['message' => 'OK'], 200);
     }
-
-    #TODO: Удалить закомментированное
-    /*
-    public function test(Request $request)
-    {
-        $response['user'] = [
-            'name' => DashboardUser::getName(),
-            'key' => DashboardUser::getKey(),
-        ];
-        return response()->json(SecurosUser::getAuthHeader(), 200);
-    }*/
-
 }
