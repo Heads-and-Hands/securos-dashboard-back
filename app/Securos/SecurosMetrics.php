@@ -14,8 +14,8 @@ class SecurosMetrics extends BaseRequest
     public static function getMetrics(
         string $tag,
         array $cameraIds,
-        \DateTimeInterface $startDateTime,
-        \DateTimeInterface $endDateTime)
+        Carbon $startDateTime,
+        Carbon $endDateTime)
     {
         $params = [
             'tag' => $tag,
@@ -28,7 +28,7 @@ class SecurosMetrics extends BaseRequest
         //return self::formatMetricsOutput($metrics);
     }
 
-    private static function formatDateTimeInput(\DateTimeInterface $dateTime): string
+    private static function formatDateTimeInput(Carbon $dateTime): string
     {
         return $dateTime->format(self::DATE_FORMAT);
     }

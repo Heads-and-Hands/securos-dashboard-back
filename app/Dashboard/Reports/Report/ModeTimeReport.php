@@ -18,6 +18,7 @@ class ModeTimeReport extends \App\Dashboard\Reports\BaseReport
     public function getResult($format = self::FORMAT_PROBLEM_TIME)
     {
         #TODO: Вывести данные в нужном формате представления
-        return count($this->params->workingVideoCameraIds);
+        //return count($this->params->workingVideoCameraIds);
+        return $this->params->intervalType;
     }
 }
