@@ -18,6 +18,6 @@ class ExportReport
 
     public function generateDocument()
     {
-        return $this->exportReport->parseDate($this->videoCameraCollection);
+        return $this->exportReport->parseData($this->videoCameraCollection);
     }
 }

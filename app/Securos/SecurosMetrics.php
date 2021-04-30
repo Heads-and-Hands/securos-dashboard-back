@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class SecurosMetrics extends BaseRequest
 {
     protected const METRICS_URL = 'api/v1/metrics';
-
+    protected const DATE_FORMAT = 'Ymd\THis';
 
     public static function getMetrics(
         string $tag,
@@ -30,7 +30,7 @@ class SecurosMetrics extends BaseRequest
 
     private static function formatDateTimeInput(\DateTimeInterface $dateTime): string
     {
-        return $dateTime->format('Ymd') . 'T' . $dateTime->format('His');
+        return $dateTime->format(self::DATE_FORMAT);
     }
 
     /*

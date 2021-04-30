@@ -7,7 +7,7 @@ use App\Custom\Contracts\ExportReportInterface;
 
 class ExportToPdf implements ExportReportInterface
 {
-    public function parseDate($data)
+    public function parseData($data)
     {
         dd($data);
     }

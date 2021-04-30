@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Models\ApiV1\Filter;
 
 use App\Http\Requests\ApiV1\VideoCamera\Filter\VideoCameraReportFilterRequest;
+use App\Models\Common\VideoCamera;
 use App\Models\QueryFilter;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class VideoCameraReportFilter extends QueryFilter
 {
@@ -13,6 +15,15 @@ class VideoCameraReportFilter extends QueryFilter
     {
         parent::__construct($request);
     }
+
+    #TODO Убрать
+    // Нельзя отфильтровывать на этой стадии, так как в одном отчете требуются в том числе камеры не в эксплатации
+    /*
+    public function apply(Builder $builder)
+    {
+        parent::apply($builder);
+        $this->builder->whereNotIn('status', [VideoCamera::NOT_IN_OPERATION, VideoCamera::UNKNOWN]);
+    }*/
 
     public function ids($value): void
     {
@@ -30,6 +41,8 @@ class VideoCameraReportFilter extends QueryFilter
         }
     }
 
+    #TODO Удалить в итоговой версии
+    /*
     public function rangeOfDate($value): void
     {
         if ($value) {
@@ -38,5 +51,5 @@ class VideoCameraReportFilter extends QueryFilter
             $dateEnd = Carbon::parse($value[1]);
             $this->builder->whereBetween('creation_at', [$dateStart, $dateEnd]);
         }
-    }
+    }*/
 }

@@ -31,6 +31,10 @@ abstract class QueryFilter
         }
     }
 
+    public function getRequest() {
+        return $this->request;
+    }
+
     protected function fields(): array
     {
         return $this->request->all();

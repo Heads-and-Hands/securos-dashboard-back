@@ -5,5 +5,5 @@ namespace App\Custom\Contracts;
 
 interface ExportReportInterface
 {
-    public function parseDate($data);
+    public function parseData($data);
 }

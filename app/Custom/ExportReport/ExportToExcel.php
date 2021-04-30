@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExportToExcel implements ExportReportInterface
 {
-    public function parseDate($data)
+    public function parseData($data)
     {
        return Excel::download(new VideoCameraExport($data), 'videoCamera.xlsx');
     }
