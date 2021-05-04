@@ -20,14 +20,16 @@ class Reports
         self::$modeTimeReport = new ModeTimeReport($params);
     }
 
-    public static function makeReports(ReportParams $params)
+    public static function makeReports(ReportParams $params) : array
     {
         self::initReports($params);
         self::$modeTimeReport->readData();
         return [
             'hourCount' => self::$hourCountReport->getResult(),
             'notWorkingCameraCountReport' => self::$notWorkingCameraCountReport->getResult(),
-            'problemTimeReport' => self::$modeTimeReport->getResult(ModeTimeReport::FORMAT_PROBLEM_TIME),
+            'problemTimeReport' => self::$modeTimeReport->getResult(ModeTimeReport::REPORT_TYPE_PROBLEM_TIME),
+            'availableTimeReport' => self::$modeTimeReport->getResult(ModeTimeReport::REPORT_TYPE_AVAILABLE_TIME),
+            'availablePercentReport' => self::$modeTimeReport->getResult(ModeTimeReport::REPORT_TYPE_AVAILABLE_PERCENT),
         ];
     }
 }

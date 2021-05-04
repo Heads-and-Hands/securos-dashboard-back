@@ -7,13 +7,11 @@ use App\Dashboard\Reports\BaseReport;
 
 class HourCountReport extends BaseReport
 {
-    public function getResult()
+    public function getResult() : string
     {
         return
-            ceil((
-                $this->params->endDateTime->getTimestamp() -
-                $this->params->startDateTime->getTimestamp()
-            ) / 3600)
-            * count($this->params->videoCameras);
+            $this->formatTimeValue(
+                $this->params->period->endDateTime->diffInSeconds($this->params->period->startDateTime) *
+                $this->getWorkingCameraCount());
     }
 }

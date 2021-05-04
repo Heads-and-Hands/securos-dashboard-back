@@ -28,7 +28,12 @@ class ReportController extends Controller
             intval($filter->getRequest()->get('timezoneOffset'))
         );
 
-        $reports = Reports::makeReports($params);
+        try {
+            $reports = Reports::makeReports($params);
+        }
+        catch (\HttpException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
 
         /*
         if ($exportReport) {
