@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Custom\ExportReport\ExportToExcel;
-use App\Custom\ExportReport\ExportToPdf;
+use App\Dashboard\Export\ExportToExcel;
+use App\Dashboard\Export\ExportToPdf;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;

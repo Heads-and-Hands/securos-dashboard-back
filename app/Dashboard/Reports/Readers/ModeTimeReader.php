@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ModeTimeReader
 {
-    private $data = [];
+    private array $data = [];
 
     public function readData(ReportParams $params)
     {

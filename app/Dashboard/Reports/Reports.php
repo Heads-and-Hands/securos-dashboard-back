@@ -32,6 +32,7 @@ class Reports
     {
         self::initReports($params);
 
+        // Даные считываются один раз из API клиента и затем используются в трёх различных отчетах
         $modeTimeReader = new ModeTimeReader();
         try {
             $modeTimeReader->readData($params);

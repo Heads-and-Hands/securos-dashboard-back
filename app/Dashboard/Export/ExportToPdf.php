@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Custom\ExportReport;
+namespace App\Dashboard\Export;
 
-use App\Custom\Contracts\ExportReportInterface;
+use App\Dashboard\Export\Contracts\ExportReportInterface;
 
 class ExportToPdf implements ExportReportInterface
 {

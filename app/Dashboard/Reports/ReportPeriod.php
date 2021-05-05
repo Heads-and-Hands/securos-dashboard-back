@@ -154,11 +154,10 @@ class ReportPeriod
     {
         $offset = $offset ?? $this->dateTimeOffset;
         if ($offset > 0) {
-            return $dateTime->copy()->addMinutes($this->dateTimeOffset);
+            return $dateTime->copy()->addMinutes($offset);
         }
         else {
-            return $dateTime->copy()->subMinutes($this->dateTimeOffset);
+            return $dateTime->copy()->subMinutes(abs($offset));
         }
     }
-
 }

@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\ApiV1;
 
-use App\Custom\Contracts\ExportReportInterface;
-use App\Custom\ExportReport\ExportReport;
+use App\Dashboard\Export\Contracts\ExportReportInterface;
+use App\Dashboard\Export\ExportReport;
+use App\Dashboard\Export\ExportReportData;
+use App\Dashboard\Auth\DashboardUser;
 use App\Http\Controllers\Controller;
 use App\Models\ApiV1\Filter\VideoCameraReportFilter;
 use App\Http\Requests\ApiV1\VideoCamera\Filter\VideoCameraReportFilterRequest;
 use App\Models\ApiV1\VideoCamera;
-use App\Securos\SecurosMetrics;
 use App\Dashboard\Reports\ReportParams;
 use App\Dashboard\Reports\Reports;
 use Carbon\Carbon;
@@ -36,30 +37,16 @@ class ReportController extends Controller
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        /*
         if ($exportReport) {
-            return (new ExportReport($exportReport, $videoCameras))->generateDocument();
-        }*/
+            $exportReportData = new ExportReportData();
+            $exportReportData->reportParams = $params;
+            $exportReportData->reports = $reports;
+            $exportReportData->userName = DashboardUser::getName();
+            return (new ExportReport($exportReport, $exportReportData))->generateDocument();
+        }
 
-        return json_encode($reports);
-
-        // Рабочий пример пробного запроса к API
-        /*
-        $data = SecurosMetrics::getMetrics(
-            'available',
-            [1, 100, 101],
-            Carbon::parse('20210401T000000'),
-            Carbon::parse('20210403T000000'));
-        return json_encode($data);
-        */
-
-        //return 1;
+        return response()->json($reports, 200);
     }
 
-    /*
-    public function report(VideoCameraReportFilterRequest $request)
-    {
-        return 'OK';
-    }*/
 }
 

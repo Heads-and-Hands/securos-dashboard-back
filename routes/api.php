@@ -36,3 +36,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('report/{exportReportClass?}', ReportController::class)->only(['index']);
     });
 });
+
+#TODO: Удалить
+// Рабочий URL для экспорта в Excel:
+// 127.0.0.1:28591/api/v1/report/excel?ids=1,2,3,11&rangeOfDate=20210428T130000-20210501T120000&timezoneOffset=-180
+// (привязка значений exportReportClass к конкретным классам прописана в методе boot() класса RouteServiceProvider)

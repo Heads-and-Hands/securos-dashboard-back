@@ -74,21 +74,6 @@ class ReportPeriodTest extends TestCase
         $this->assertTrue($period->intervals[3]->end->equalTo(Carbon::parse('20210425T000000')));
     }
 
-    public function testSplitByDaysBoundsTimezoneOffset()
-    {
-        $period = new ReportPeriod(
-            Carbon::parse('20210420T230000'),
-            Carbon::parse('20210424T230000'),
-            60
-        );
-
-        $this->assertCount(4, $period->intervals);
-        $this->assertTrue($period->intervals[0]->start->equalTo(Carbon::parse('20210420T230000')));
-        $this->assertTrue($period->intervals[0]->end->equalTo(Carbon::parse('20210421T230000')));
-        $this->assertTrue($period->intervals[3]->start->equalTo(Carbon::parse('20210423T230000')));
-        $this->assertTrue($period->intervals[3]->end->equalTo(Carbon::parse('20210424T230000')));
-    }
-
     public function testSplitByDaysBoundsBoundsNotMatch()
     {
         $period = new ReportPeriod(
@@ -292,6 +277,36 @@ class ReportPeriodTest extends TestCase
         $this->assertTrue($period->intervals[0]->end->equalTo(Carbon::parse('20140101T000000')));
         $this->assertTrue($period->intervals[8]->start->equalTo(Carbon::parse('20210101T000000')));
         $this->assertTrue($period->intervals[8]->end->equalTo(Carbon::parse('20210501T000000')));
+    }
+
+    public function testTimezoneOffsetPositive()
+    {
+        $period = new ReportPeriod(
+            Carbon::parse('20210420T230000'),
+            Carbon::parse('20210424T230000'),
+            60
+        );
+
+        $this->assertCount(4, $period->intervals);
+        $this->assertTrue($period->intervals[0]->start->equalTo(Carbon::parse('20210420T230000')));
+        $this->assertTrue($period->intervals[0]->end->equalTo(Carbon::parse('20210421T230000')));
+        $this->assertTrue($period->intervals[3]->start->equalTo(Carbon::parse('20210423T230000')));
+        $this->assertTrue($period->intervals[3]->end->equalTo(Carbon::parse('20210424T230000')));
+    }
+
+    public function testTimezoneOffsetNegative()
+    {
+        $period = new ReportPeriod(
+            Carbon::parse('20210420T230000'),
+            Carbon::parse('20210424T230000'),
+            -60
+        );
+
+        $this->assertCount(5, $period->intervals);
+        $this->assertTrue($period->intervals[0]->start->equalTo(Carbon::parse('20210420T230000')));
+        $this->assertTrue($period->intervals[0]->end->equalTo(Carbon::parse('20210421T010000')));
+        $this->assertTrue($period->intervals[4]->start->equalTo(Carbon::parse('20210424T010000')));
+        $this->assertTrue($period->intervals[4]->end->equalTo(Carbon::parse('20210424T230000')));
     }
 
 

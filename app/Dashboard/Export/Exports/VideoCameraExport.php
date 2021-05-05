@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Exports;
+namespace App\Dashboard\Export\Exports;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
+
+#TODO: Удалить
 
 class VideoCameraExport implements FromCollection
 {
