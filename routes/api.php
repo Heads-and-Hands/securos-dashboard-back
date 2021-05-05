@@ -34,7 +34,5 @@ Route::group(['prefix' => 'v1'], function () {
         Route::patch('camera/passport/{camera}', [VideoCameraPassportController::class, 'approve']);
         Route::delete('camera/passport/{camera}', [VideoCameraPassportController::class, 'destroy']);
         Route::resource('report/{exportReportClass?}', ReportController::class)->only(['index']);
-        #TODO удалить
-        //Route::get('report', [ReportController::class, 'report']);
     });
 });

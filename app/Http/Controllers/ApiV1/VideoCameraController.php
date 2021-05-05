@@ -14,6 +14,7 @@ use App\Models\ApiV1\{Filter\VideoCameraFilter,
     Filter\VideoCameraIpServerFilter,
     Filter\VideoCameraShortFilter,
     VideoCamera};
+use App\Dashboard\Cameras\Cameras;
 
 class VideoCameraController extends Controller
 {
@@ -21,6 +22,9 @@ class VideoCameraController extends Controller
     {
         if ((bool)request('updateCameras', false)) {
             dispatch(new SecurosCamerasJob());
+
+            // Синхронный вызов:
+            //Cameras::updateCameras();
 
             return response()->json(['status' => 'success'], 200);
         }

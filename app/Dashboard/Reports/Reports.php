@@ -3,33 +3,49 @@ declare(strict_types=1);
 
 namespace App\Dashboard\Reports;
 
-use App\Dashboard\Reports\Report\HourCountReport;
-use App\Dashboard\Reports\Report\ModeTimeReport;
-use App\Dashboard\Reports\Report\NotWorkingCameraCountReport;
+use App\Dashboard\Reports\Custom\AvailableTimeReport;
+use App\Dashboard\Reports\Custom\AvailableTimeReportPercent;
+use App\Dashboard\Reports\Custom\ProblemTimeReport;
+use App\Dashboard\Reports\Custom\TotalTimeReport;
+use App\Dashboard\Reports\Custom\NotWorkingCameraCountReport;
+use App\Dashboard\Reports\Readers\ModeTimeReader;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Reports
 {
-    private static HourCountReport $hourCountReport;
+    private static TotalTimeReport $hourCountReport;
     private static NotWorkingCameraCountReport $notWorkingCameraCountReport;
-    private static ModeTimeReport $modeTimeReport;
+    private static ProblemTimeReport $problemTimeReport;
+    private static AvailableTimeReport $availableTimeReport;
+    private static AvailableTimeReportPercent $availableTimeReportPercent;
 
     private static function initReports(ReportParams $params)
     {
-        self::$hourCountReport = new HourCountReport($params);
+        self::$hourCountReport = new TotalTimeReport($params);
         self::$notWorkingCameraCountReport = new NotWorkingCameraCountReport($params);
-        self::$modeTimeReport = new ModeTimeReport($params);
+        self::$problemTimeReport = new ProblemTimeReport($params);
+        self::$availableTimeReport = new AvailableTimeReport($params);
+        self::$availableTimeReportPercent= new AvailableTimeReportPercent($params);
     }
 
     public static function makeReports(ReportParams $params) : array
     {
         self::initReports($params);
-        self::$modeTimeReport->readData();
+
+        $modeTimeReader = new ModeTimeReader();
+        try {
+            $modeTimeReader->readData($params);
+        }
+        catch (HttpException $e) {
+            throw $e;
+        }
+
         return [
-            'hourCount' => self::$hourCountReport->getResult(),
-            'notWorkingCameraCountReport' => self::$notWorkingCameraCountReport->getResult(),
-            'problemTimeReport' => self::$modeTimeReport->getResult(ModeTimeReport::REPORT_TYPE_PROBLEM_TIME),
-            'availableTimeReport' => self::$modeTimeReport->getResult(ModeTimeReport::REPORT_TYPE_AVAILABLE_TIME),
-            'availablePercentReport' => self::$modeTimeReport->getResult(ModeTimeReport::REPORT_TYPE_AVAILABLE_PERCENT),
+            'totalTime' => self::$hourCountReport->getResult(),
+            'notWorkingCameraCount' => self::$notWorkingCameraCountReport->getResult(),
+            'problemTime' => self::$problemTimeReport->getResult($modeTimeReader->getResult()),
+            'availableTime' => self::$availableTimeReport->getResult($modeTimeReader->getResult()),
+            'availableTimePercent' => self::$availableTimeReportPercent->getResult($modeTimeReader->getResult())
         ];
     }
 }

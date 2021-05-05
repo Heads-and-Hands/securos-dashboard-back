@@ -13,6 +13,7 @@ use App\Securos\SecurosMetrics;
 use App\Dashboard\Reports\ReportParams;
 use App\Dashboard\Reports\Reports;
 use Carbon\Carbon;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ReportController extends Controller
 {
@@ -31,7 +32,7 @@ class ReportController extends Controller
         try {
             $reports = Reports::makeReports($params);
         }
-        catch (\HttpException $e) {
+        catch (HttpException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 

@@ -1,39 +1,30 @@
 <?php
 
-namespace App\Jobs;
+
+namespace App\Dashboard\Cameras;
+
 
 use App\Models\ApiV1\VideoCamera;
-use App\Models\Common\JobCheck;
 use App\Securos\SecurosCameras;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use App\Dashboard\Cameras\Cameras;
+use App\Models\Common\JobCheck;
 
-class SecurosCamerasJob implements ShouldQueue
+class Cameras
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    public function handle()
-    {
-        Cameras::updateCameras();
-    }
-
-    #TODO: Удалить
     /*
-    public function handle()
+     * Обновляет список камер из Securos API
+     * Дублирует работу задания SecurosCameraJob, выполняя ее синхронно
+     * */
+    public static function updateCameras()
     {
         $checkJob = new JobCheck();
         $checkJob->name = 'SecurosCamerasJob';
         $checkJob->save();
-        $this->applyChanges();
+        self::doUpdateCameras();
         $checkJob->done = true;
         $checkJob->save();
     }
 
-    private function applyChanges()
+    private static function doUpdateCameras()
     {
         $cameras = SecurosCameras::getCameras();
         $cameraIds = [];
@@ -44,6 +35,6 @@ class SecurosCamerasJob implements ShouldQueue
         VideoCamera::query()->upsert($cameras, ['id'],
             ['name', 'ip', 'type', 'ip_decode', 'ip_server', 'ip_server_decode',
                 'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at', 'approved', 'update_time']);
-    }*/
+    }
 
 }

@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 
-namespace App\Dashboard\Reports\Report;
+namespace App\Dashboard\Reports\Custom;
 
 
 use App\Models\Common\VideoCamera;

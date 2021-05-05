@@ -21,15 +21,14 @@ abstract class BaseReport
         return count($this->params->workingVideoCameraIds);
     }
 
-    protected function formatTimeValue(int $seconds) : string
+    protected static function formatTimeValue(int $seconds) : string
     {
-        #TODO разбить на часы и минуты через целочисленное деление
-        //$interval = CarbonInterval::seconds($seconds);
-        //return $seconds . ' -> ' . $interval . '| ' . $interval->format("%h:%i:%s");
-        return '__:__';
+        $hours = intdiv($seconds, 3600);
+        $minutes = round(($seconds % 3600) / 60);
+        return $hours . ':' . $minutes;
     }
 
-    protected function formatPercentValue(float $value) : string
+    protected static function formatPercentValue(float $value) : string
     {
         return number_format($value, 1, '.', '');
     }
