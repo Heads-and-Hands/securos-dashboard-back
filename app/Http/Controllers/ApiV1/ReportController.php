@@ -14,6 +14,7 @@ use App\Models\ApiV1\VideoCamera;
 use App\Dashboard\Reports\ReportParams;
 use App\Dashboard\Reports\Reports;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ReportController extends Controller
@@ -22,6 +23,10 @@ class ReportController extends Controller
     {
         $videoCameras = VideoCamera::reportFilter($filter)->get();
         $dates = explode("-", $filter->getRequest()->get('rangeOfDate'));
+
+        if ($filter->getRequest()->has('locale')) {
+            App::setLocale($filter->getRequest()->get('locale'));
+        }
 
         $params = new ReportParams(
             $videoCameras,

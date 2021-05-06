@@ -60,8 +60,8 @@ class ReportPeriod
 
     private function initIntervals()
     {
-        $start = $this->offsetDateTime($this->startDateTime);
-        $end = $this->offsetDateTime($this->endDateTime);
+        $start = $this->dateTimeToUserTimezone($this->startDateTime);
+        $end = $this->dateTimeToUserTimezone($this->endDateTime);
         $intervals = $this->splitPeriod($start, $end);
         $this->intervals = $this->intervalsToUtc($intervals);
     }
@@ -137,27 +137,20 @@ class ReportPeriod
     private function intervalsToUtc($intervals)
     {
         foreach ($intervals as $interval) {
-            $interval->start =
-                $this->offsetDateTime($interval->start, -$this->dateTimeOffset);
-            $interval->end =
-                $this->offsetDateTime($interval->end, -$this->dateTimeOffset);
+            $interval->start = $this->dateTimeToUTC($interval->start);
+            $interval->end = $this->dateTimeToUTC($interval->end);
         }
         return $intervals;
     }
 
-    /*
-     * Сдвигает время на заданное количество минут вперед (если используется положительное значение)
-     * или назад (если инпользуется отрицательное). Если время сдвига не задано,
-     * в качестве величины сдвига используется значение $this->dateTimeOffset
-     * */
-    private function offsetDateTime(CarbonInterface $dateTime, ?int $offset = null) : CarbonInterface
+    private function dateTimeToUTC(CarbonInterface $dateTime) : CarbonInterface
     {
-        $offset = $offset ?? $this->dateTimeOffset;
-        if ($offset > 0) {
-            return $dateTime->copy()->addMinutes($offset);
-        }
-        else {
-            return $dateTime->copy()->subMinutes(abs($offset));
-        }
+        return $dateTime->copy()->addMinutes(-$this->dateTimeOffset);
     }
+
+    private function dateTimeToUserTimezone(CarbonInterface $dateTime) : CarbonInterface
+    {
+        return $dateTime->copy()->addMinutes($this->dateTimeOffset);
+    }
+
 }

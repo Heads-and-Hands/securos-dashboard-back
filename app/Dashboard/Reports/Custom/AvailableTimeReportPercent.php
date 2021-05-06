@@ -6,6 +6,7 @@ namespace App\Dashboard\Reports\Custom;
 
 use App\Dashboard\Reports\ReportIntervalValue;
 use App\Dashboard\Reports\BaseReport;
+use App\Dashboard\Reports\Reports;
 
 class AvailableTimeReportPercent extends BaseReport
 {
@@ -17,14 +18,15 @@ class AvailableTimeReportPercent extends BaseReport
             $availableTimePercent = $this->calculateAvailableTimePercent($intervalValue);
             $totalValue += $availableTimePercent;
             $intervals []= [
-                'start' => $intervalValue->start->copy(),
-                'end' => $intervalValue->end->copy(),
-                'value' => self::formatPercentValue($availableTimePercent)
+                Reports::KEY_START => $intervalValue->start->copy(),
+                Reports::KEY_END => $intervalValue->end->copy(),
+                Reports::KEY_VALUE => self::formatPercentValue($availableTimePercent)
             ];
         }
         return [
-            'intervals' => $intervals,
-            'totalValue' => self::formatPercentValue($totalValue / count($data))
+            Reports::KEY_INTERVALS => $intervals,
+            Reports::KEY_TOTAL_VALUE => self::formatPercentValue($totalValue / count($data)),
+            Reports::KEY_TIME_UNIT => $this->getTimeUnit()
         ];
     }
 

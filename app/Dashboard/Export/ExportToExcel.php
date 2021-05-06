@@ -6,7 +6,6 @@ namespace App\Dashboard\Export;
 use App\Dashboard\Export\Contracts\ExportReportInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Dashboard\Export\Exports\ReportsExport;
-use App\Dashboard\Export\ExportReportData;
 
 class ExportToExcel implements ExportReportInterface
 {

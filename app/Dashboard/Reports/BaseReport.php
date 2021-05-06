@@ -7,6 +7,15 @@ use Carbon\CarbonInterval;
 
 abstract class BaseReport
 {
+    private static array $timeUnits = [
+        ReportPeriod::INTERVAL_HOUR => 'hour',
+        ReportPeriod::INTERVAL_DAY => 'day',
+        ReportPeriod::INTERVAL_WEEK => 'week',
+        ReportPeriod::INTERVAL_MONTH => 'month',
+        ReportPeriod::INTERVAL_QUARTER => 'quarter',
+        ReportPeriod::INTERVAL_YEAR => 'year'
+    ];
+
     protected ReportParams $params;
 
     public function __construct(ReportParams $params)
@@ -31,6 +40,11 @@ abstract class BaseReport
     protected static function formatPercentValue(float $value) : string
     {
         return number_format($value, 1, '.', '');
+    }
+
+    protected function getTimeUnit()
+    {
+        return self::$timeUnits[$this->params->period->intervalType];
     }
 
 }

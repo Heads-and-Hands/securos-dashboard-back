@@ -6,6 +6,7 @@ namespace App\Http\Requests\ApiV1\VideoCamera\Filter;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class VideoCameraReportFilterRequest extends FormRequest
 {
@@ -43,7 +44,8 @@ class VideoCameraReportFilterRequest extends FormRequest
             'ids' => ['string', $validateIdList],
             'noIds' => ['string', $validateIdList],
             'rangeOfDate' => ['required', 'string', $validateDateRange],
-            'timezoneOffset' => ['required', 'integer', 'min:-1410',  'max:1410']
+            'timezoneOffset' => ['required', 'integer', 'min:-1410',  'max:1410'],
+            'locale' => [Rule::in(['ru', 'en'])]
         ];
 
         if ($this->request->has('ids')) {

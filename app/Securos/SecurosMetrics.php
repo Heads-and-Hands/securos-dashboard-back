@@ -27,7 +27,6 @@ class SecurosMetrics extends BaseRequest
         self::TAG_PROBLEM_STREAM_RES => 'problem-stream-res',
     ];
 
-
     public static function getMetrics(
         int $tag,
         array $cameraIds,
@@ -42,18 +41,10 @@ class SecurosMetrics extends BaseRequest
         ];
         $data = parent::get(self::METRICS_URL, $params);
         return json_decode($data);
-        //return self::formatMetricsOutput($metrics);
     }
 
     private static function formatDateTimeInput(Carbon $dateTime): string
     {
         return $dateTime->format(self::DATE_FORMAT);
     }
-
-    /*
-    protected static function formatMetricsOutput($metrics): array
-    {
-        return $metrics;
-    }*/
-
 }

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Dashboard\Reports\Custom;
 
-
 use App\Dashboard\Reports\BaseReport;
+use App\Dashboard\Reports\Reports;
 
 class ProblemTimeReport extends  BaseReport
 {
@@ -15,14 +15,15 @@ class ProblemTimeReport extends  BaseReport
         foreach ($data as $intervalValue) {
             $totalValue += $intervalValue->value;
             $intervals []= [
-                'start' => $intervalValue->start->copy(),
-                'end' => $intervalValue->end->copy(),
-                'value' => self::formatTimeValue($intervalValue->value)
+                Reports::KEY_START => $intervalValue->start->copy(),
+                Reports::KEY_END => $intervalValue->end->copy(),
+                Reports::KEY_VALUE => self::formatTimeValue($intervalValue->value)
             ];
         }
         return [
-            'intervals' => $intervals,
-            'totalValue' => self::formatTimeValue($totalValue)
+            Reports::KEY_INTERVALS => $intervals,
+            Reports::KEY_TOTAL_VALUE => self::formatTimeValue($totalValue),
+            Reports::KEY_TIME_UNIT => $this->getTimeUnit()
         ];
     }
 }
