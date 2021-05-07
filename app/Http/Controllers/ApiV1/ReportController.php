@@ -41,6 +41,9 @@ class ReportController extends Controller
         catch (HttpException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
+        catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 404);
+        }
 
         if ($exportReport) {
             $exportReportData = new ExportReportData();

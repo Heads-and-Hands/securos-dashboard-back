@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'ru',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -165,9 +165,8 @@ return [
         /*
          * Package Dashboard Providers...
          */
-
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Application Dashboard Providers...
          */
@@ -232,7 +231,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-
+        //'PDF' => Barryvdh\DomPDF\Facade::class,
         /* Фасад для работы с Securos*/
         'SecurosAPI' => App\Custom\Facades\SecurosAPI::class,
     ],

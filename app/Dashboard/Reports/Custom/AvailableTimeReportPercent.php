@@ -12,6 +12,11 @@ class AvailableTimeReportPercent extends BaseReport
 {
     public function getResult(array $data = []) : array
     {
+        // Если в списке нет работающих камер, при формировании отчета возникнет деление на нуль
+        if ($this->getWorkingCameraCount() == 0) {
+            throw new \Exception('Cannot generate report: no working camera selected');
+        }
+
         $intervals = [];
         $totalValue = 0;
         foreach ($data as $intervalValue) {

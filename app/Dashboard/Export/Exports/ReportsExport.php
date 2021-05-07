@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Dashboard\Export\Exports;
 
 use App\Dashboard\Export\ExportReportData;
+use App\Dashboard\Reports\ReportPeriod;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
@@ -11,6 +12,9 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use App\Dashboard\Reports\Reports;
 use Illuminate\Support\Facades\App;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 class ReportsExport implements FromCollection, WithColumnWidths
 {
@@ -28,6 +32,7 @@ class ReportsExport implements FromCollection, WithColumnWidths
             'B' => 15,
         ];
     }
+
     public function collection() : Collection
     {
         $output = [];
@@ -81,7 +86,7 @@ class ReportsExport implements FromCollection, WithColumnWidths
         $output []= [__('reports.title_datetime') ,  __('reports.title_value_time')];
         foreach($report[Reports::KEY_INTERVALS] as $interval) {
             $output []= [
-                $this->formatDateTime($interval[Reports::KEY_START]),
+                $this->formatIntervalDateTime($interval[Reports::KEY_START]),
                 $this->formatTimeValue($interval[Reports::KEY_VALUE])
             ];
         }
@@ -96,7 +101,7 @@ class ReportsExport implements FromCollection, WithColumnWidths
         $output []= [__('reports.title_datetime') ,  __('reports.title_value_percent')];
         foreach($report[Reports::KEY_INTERVALS] as $interval) {
             $output []= [
-                $this->formatDateTime($interval[Reports::KEY_START]),
+                $this->formatIntervalDateTime($interval[Reports::KEY_START]),
                 $this->formatPercentValue($interval[Reports::KEY_VALUE])
             ];
         }
@@ -108,6 +113,19 @@ class ReportsExport implements FromCollection, WithColumnWidths
         return $dateTime->copy()
             ->addMinutes($this->data->reportParams->period->dateTimeOffset)
             ->format(__('reports.datetime_format'));
+    }
+
+    private function formatIntervalDateTime(CarbonInterface $dateTime) : string
+    {
+        if ($this->data->reportParams->period->intervalType == ReportPeriod::INTERVAL_HOUR) {
+            $format = __('reports.datetime_format');
+        }
+        else {
+            $format = __('reports.date_format');
+        }
+        return $dateTime->copy()
+            ->addMinutes($this->data->reportParams->period->dateTimeOffset)
+            ->format($format);
     }
 
     private function formatTimeValue(string $value) : string

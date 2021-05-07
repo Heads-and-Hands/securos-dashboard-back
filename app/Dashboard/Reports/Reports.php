@@ -54,17 +54,24 @@ class Reports
             throw $e;
         }
 
-        return [
-            self::REPORT_TOTAL_TIME =>
-                self::$hourCountReport->getResult(),
-            self::REPORT_NOT_WORKING_CAMERA_COUNT =>
-                self::$notWorkingCameraCountReport->getResult(),
-            self::REPORT_PROBLEM_TIME =>
-                self::$problemTimeReport->getResult($modeTimeReader->getResult()),
-            self::REPORT_AVAILABLE_TIME =>
-                self::$availableTimeReport->getResult($modeTimeReader->getResult()),
-            self::REPORT_AVAILABLE_TIME_PERCENT =>
-                self::$availableTimeReportPercent->getResult($modeTimeReader->getResult())
-        ];
+        try {
+            $result = [
+                self::REPORT_TOTAL_TIME =>
+                    self::$hourCountReport->getResult(),
+                self::REPORT_NOT_WORKING_CAMERA_COUNT =>
+                    self::$notWorkingCameraCountReport->getResult(),
+                self::REPORT_PROBLEM_TIME =>
+                    self::$problemTimeReport->getResult($modeTimeReader->getResult()),
+                self::REPORT_AVAILABLE_TIME =>
+                    self::$availableTimeReport->getResult($modeTimeReader->getResult()),
+                self::REPORT_AVAILABLE_TIME_PERCENT =>
+                    self::$availableTimeReportPercent->getResult($modeTimeReader->getResult())
+            ];
+        }
+        catch (\Exception $e) {
+            throw $e;
+        }
+
+        return $result;
     }
 }

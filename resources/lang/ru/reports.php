@@ -17,5 +17,6 @@ return [
     'title_value_time' => 'Часы',
     'title_value_percent' => '%',
     'value_time' => ':hours ч :minutes мин',
-    'datetime_format' => 'd.m.Y H:i'
+    'datetime_format' => 'd.m.Y H:i',
+    'date_format' => 'd.m.Y'
 ];

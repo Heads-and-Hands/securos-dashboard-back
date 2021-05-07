@@ -12,7 +12,5 @@ class ExportToExcel implements ExportReportInterface
     public function parseData(ExportReportData $data)
     {
         return Excel::download(new ReportsExport($data), 'reports.xlsx');
-        #TODO: Удалить
-        //return Excel::download(new VideoCameraExport($data), 'videoCamera.xlsx');
     }
 }
