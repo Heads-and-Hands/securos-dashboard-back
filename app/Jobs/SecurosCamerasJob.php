@@ -20,30 +20,4 @@ class SecurosCamerasJob implements ShouldQueue
     {
         Cameras::updateCameras();
     }
-
-    #TODO: Удалить
-    /*
-    public function handle()
-    {
-        $checkJob = new JobCheck();
-        $checkJob->name = 'SecurosCamerasJob';
-        $checkJob->save();
-        $this->applyChanges();
-        $checkJob->done = true;
-        $checkJob->save();
-    }
-
-    private function applyChanges()
-    {
-        $cameras = SecurosCameras::getCameras();
-        $cameraIds = [];
-        foreach ($cameras as $camera) {
-            $cameraIds []= $camera['id'];
-        }
-        VideoCamera::whereNotIn('id', $cameraIds)->delete();
-        VideoCamera::query()->upsert($cameras, ['id'],
-            ['name', 'ip', 'type', 'ip_decode', 'ip_server', 'ip_server_decode',
-                'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at', 'approved', 'update_time']);
-    }*/
-
 }

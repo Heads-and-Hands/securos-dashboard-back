@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Dashboard\Export\ExportToExcel;
 use App\Dashboard\Export\ExportToPdf;
+use App\Dashboard\Export\ExportToHtml;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -46,7 +47,9 @@ class RouteServiceProvider extends ServiceProvider
             if ($value === 'excel') {
                 return new ExportToExcel;
             }
-
+            if ($value === 'html') {
+                return new ExportToHtml;
+            }
         });
 
         $this->configureRateLimiting();

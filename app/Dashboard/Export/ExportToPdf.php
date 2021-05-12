@@ -18,10 +18,11 @@ class ExportToPdf implements ExportReportInterface
         return $pdf->stream();
         */
 
+        // Работающий пример с PDF:
+
         $pdf = App::make('dompdf.wrapper');
         $pdf->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
         $pdf->loadView('pdf.reports', ['data' => $data]);
-        //$pdf = PDF::loadView('pdf.reports', $data);
         return $pdf->download('report.pdf');
 
         /*

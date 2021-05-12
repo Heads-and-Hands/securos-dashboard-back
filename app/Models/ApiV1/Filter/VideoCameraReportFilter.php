@@ -16,15 +16,6 @@ class VideoCameraReportFilter extends QueryFilter
         parent::__construct($request);
     }
 
-    #TODO Убрать
-    // Нельзя отфильтровывать на этой стадии, так как в одном отчете требуются в том числе камеры не в эксплатации
-    /*
-    public function apply(Builder $builder)
-    {
-        parent::apply($builder);
-        $this->builder->whereNotIn('status', [VideoCamera::NOT_IN_OPERATION, VideoCamera::UNKNOWN]);
-    }*/
-
     public function ids($value): void
     {
         if ($value) {

@@ -52,6 +52,11 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'reports' => [
+            'driver' => 'local',
+            'root' => storage_path('reports-template'),
+        ],
+
     ],
 
     /*
