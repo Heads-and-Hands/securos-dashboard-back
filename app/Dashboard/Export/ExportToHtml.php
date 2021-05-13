@@ -36,7 +36,7 @@ class ExportToHtml implements Contracts\ExportReportInterface
         foreach ($files as $name => $file)
         {
             if (!$file->isDir()) {
-                $filePath     = $file->getRealPath();
+                $filePath = $file->getRealPath();
                 $relativePath = substr($filePath, strlen($path) + 1);
                 $zip->addFile($filePath, $relativePath);
             }
