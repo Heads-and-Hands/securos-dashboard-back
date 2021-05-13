@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace App\Dashboard\Cameras;
 
@@ -12,16 +12,19 @@ class Cameras
 {
     /*
      * Обновляет список камер из Securos API
-     * Дублирует работу задания SecurosCameraJob, выполняя ее синхронно
      * */
     public static function updateCameras()
     {
         $checkJob = new JobCheck();
         $checkJob->name = 'SecurosCamerasJob';
         $checkJob->save();
-        self::doUpdateCameras();
-        $checkJob->done = true;
-        $checkJob->save();
+        try {
+            self::doUpdateCameras();
+        }
+        finally {
+            $checkJob->done = true;
+            $checkJob->save();
+        }
     }
 
     private static function doUpdateCameras()
