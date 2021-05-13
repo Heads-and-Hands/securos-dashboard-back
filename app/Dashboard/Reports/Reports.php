@@ -45,6 +45,18 @@ class Reports
     {
         self::initReports($params);
 
+        $result = [
+            self::REPORT_TOTAL_TIME =>
+                self::$hourCountReport->getResult(),
+            self::REPORT_NOT_WORKING_CAMERA_COUNT =>
+                self::$notWorkingCameraCountReport->getResult(),
+        ];
+
+        // Если нет работающих камер, формировать остальные отчеты не имеет смысла
+        if (count($params->workingVideoCameraIds) == 0) {
+            return $result;
+        }
+
         // Даные считываются один раз из API клиента и затем используются в трёх различных отчетах
         $modeTimeReader = new ModeTimeReader();
         try {
@@ -55,18 +67,12 @@ class Reports
         }
 
         try {
-            $result = [
-                self::REPORT_TOTAL_TIME =>
-                    self::$hourCountReport->getResult(),
-                self::REPORT_NOT_WORKING_CAMERA_COUNT =>
-                    self::$notWorkingCameraCountReport->getResult(),
-                self::REPORT_PROBLEM_TIME =>
-                    self::$problemTimeReport->getResult($modeTimeReader->getResult()),
-                self::REPORT_AVAILABLE_TIME =>
-                    self::$availableTimeReport->getResult($modeTimeReader->getResult()),
-                self::REPORT_AVAILABLE_TIME_PERCENT =>
-                    self::$availableTimeReportPercent->getResult($modeTimeReader->getResult())
-            ];
+            $result[self::REPORT_PROBLEM_TIME] =
+                self::$problemTimeReport->getResult($modeTimeReader->getResult());
+            $result[self::REPORT_AVAILABLE_TIME] =
+                self::$availableTimeReport->getResult($modeTimeReader->getResult());
+            $result[self::REPORT_AVAILABLE_TIME_PERCENT] =
+                self::$availableTimeReportPercent->getResult($modeTimeReader->getResult());
         }
         catch (\Exception $e) {
             throw $e;

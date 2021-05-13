@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Dashboard\Export;
 
 use App\Dashboard\Export\Contracts\ExportReportInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ExportReport
 {

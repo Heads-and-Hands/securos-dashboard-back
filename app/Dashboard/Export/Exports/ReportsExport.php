@@ -59,21 +59,26 @@ class ReportsExport implements FromCollection, WithColumnWidths
                 'value' => $this->data->reports[Reports::REPORT_NOT_WORKING_CAMERA_COUNT]])];
         $output []= [''];
 
-        $output []= [__('reports.report_title_available_time')];
+        // Если нет работающих камер, формировать остальные отчеты не имеет смысла
+        if (count($this->data->reportParams->workingVideoCameraIds) == 0) {
+            return new Collection($output);
+        }
+
+        $output [] = [__('reports.report_title_available_time')];
         $output = array_merge(
             $output, $this->generateTimeIntervalReport($this->data->reports[Reports::REPORT_AVAILABLE_TIME]));
-        $output []= [''];
+        $output [] = [''];
 
-        $output []= [__('reports.report_title_available_time_percent')];
+        $output [] = [__('reports.report_title_available_time_percent')];
         $output = array_merge(
             $output, $this->generatePercentIntervalReport(
-                $this->data->reports[Reports::REPORT_AVAILABLE_TIME_PERCENT]));
-        $output []= [''];
+            $this->data->reports[Reports::REPORT_AVAILABLE_TIME_PERCENT]));
+        $output [] = [''];
 
-        $output []= [__('reports.report_title_problem_time')];
+        $output [] = [__('reports.report_title_problem_time')];
         $output = array_merge(
             $output, $this->generateTimeIntervalReport($this->data->reports[Reports::REPORT_PROBLEM_TIME]));
-        $output []= [''];
+        $output [] = [''];
 
         return new Collection($output);
     }
