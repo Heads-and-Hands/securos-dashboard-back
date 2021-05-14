@@ -42,7 +42,7 @@ class ReportController extends Controller
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
         catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 404);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
 
         if ($exportReport) {
