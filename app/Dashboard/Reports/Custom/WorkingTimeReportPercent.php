@@ -10,36 +10,45 @@ use App\Dashboard\Reports\Reports;
 
 class WorkingTimeReportPercent extends BaseReport
 {
-    public function getResult(array $data = []) : array
+    /**
+     * @throws \Exception
+     */
+    public function getResult(array $availableTimeValues = [], array $problemStreamTimeValues = []) : array
     {
-        // Если в списке нет работающих камер, при формировании отчета возникнет деление на нуль
-        if ($this->getWorkingCameraCount() == 0) {
-            throw new \Exception('Cannot generate report: no working camera selected');
-        }
-
         $intervals = [];
-        $totalValue = 0;
-        foreach ($data as $intervalValue) {
-            $availableTimePercent = $this->calculateAvailableTimePercent($intervalValue);
-            $totalValue += $availableTimePercent;
+        $availableTimeSum = 0;
+        $workingTimeSum = 0;
+
+        for ($i = 0; $i < $this->getPeriodIntervalCount(); $i++) {
+            if ($availableTimeValues[$i]->value == 0) {
+                $workingTimePercent = 0;
+            }
+            else {
+                $workingTime = ($availableTimeValues[$i]->value - $problemStreamTimeValues[$i]->value);
+                if ($workingTime < 0) throw new \Exception('available time should not be less than problem time');
+                $workingTimePercent = 100 * $workingTime / $availableTimeValues[$i]->value;
+                $workingTimeSum += $workingTime;
+                $availableTimeSum += $availableTimeValues[$i]->value;
+            }
+
             $intervals []= [
-                Reports::KEY_START => $intervalValue->start->copy(),
-                Reports::KEY_END => $intervalValue->end->copy(),
-                Reports::KEY_VALUE => self::formatPercentValue($availableTimePercent)
+                Reports::KEY_START => $this->params->period->intervals[$i]->start->copy(),
+                Reports::KEY_END => $this->params->period->intervals[$i]->end->copy(),
+                Reports::KEY_VALUE => self::formatPercentValue($workingTimePercent)
             ];
         }
+
+        if ($availableTimeSum == 0) {
+            $totalValue = 0;
+        }
+        else {
+            $totalValue = 100 * $workingTimeSum / $availableTimeSum;
+        }
+
         return [
             Reports::KEY_INTERVALS => $intervals,
-            Reports::KEY_TOTAL_VALUE => self::formatPercentValue($totalValue / count($data)),
+            Reports::KEY_TOTAL_VALUE => self::formatPercentValue($totalValue),
             Reports::KEY_TIME_UNIT => $this->getTimeUnit()
         ];
-    }
-
-    protected function calculateAvailableTimePercent(ReportIntervalValue $intervalValue) : float
-    {
-        $periodLength = $intervalValue->end->diffInSeconds($intervalValue->start);
-        $totalTime = $periodLength * $this->getWorkingCameraCount();
-        $availableTime = $totalTime - $intervalValue->value;
-        return 100 * $availableTime / $totalTime;
     }
 }

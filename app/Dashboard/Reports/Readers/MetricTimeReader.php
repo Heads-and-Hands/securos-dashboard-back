@@ -9,16 +9,22 @@ use App\Dashboard\Reports\ReportParams;
 use App\Securos\SecurosMetrics;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class ModeTimeReader
+class MetricTimeReader
 {
     private array $data = [];
+    private int $tag;
+
+    public function __construct(int $tag)
+    {
+        $this->tag = $tag;
+    }
 
     public function readData(ReportParams $params)
     {
         $this->data = [];
         foreach ($params->period->intervals as $interval) {
             $response = SecurosMetrics::getMetrics(
-                SecurosMetrics::TAG_PROBLEM_STREAM,
+                $this->tag,
                 $params->workingVideoCameraIds,
                 $interval->start,
                 $interval->end);

@@ -30,6 +30,11 @@ abstract class BaseReport
         return count($this->params->workingVideoCameraIds);
     }
 
+    protected function getPeriodIntervalCount() : int
+    {
+        return count($this->params->period->intervals);
+    }
+
     protected static function formatTimeValue(int $seconds) : string
     {
         $hours = intdiv($seconds, 3600);

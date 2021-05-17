@@ -9,17 +9,23 @@ use App\Dashboard\Reports\Reports;
 
 class WorkingTimeReport extends BaseReport
 {
-    public function getResult(array $data = []) : array
+    /**
+     * @throws \Exception
+     */
+    public function getResult(array $availableTimeValues = [], array $problemStreamTimeValues = []) : array
     {
         $intervals = [];
         $totalValue = 0;
-        foreach ($data as $intervalValue) {
-            $availableTime = $this->calculateAvailableTime($intervalValue);
-            $totalValue += $availableTime;
+
+        for ($i = 0; $i < $this->getPeriodIntervalCount(); $i++) {
+            $workingTime =
+                $availableTimeValues[$i]->value - $problemStreamTimeValues[$i]->value;
+            if ($workingTime < 0) throw new \Exception('available time should not be less than problem time');
+            $totalValue += $workingTime;
             $intervals []= [
-                Reports::KEY_START => $intervalValue->start->copy(),
-                Reports::KEY_END => $intervalValue->end->copy(),
-                Reports::KEY_VALUE => self::formatTimeValue($availableTime)
+                Reports::KEY_START => $this->params->period->intervals[$i]->start->copy(),
+                Reports::KEY_END => $this->params->period->intervals[$i]->end->copy(),
+                Reports::KEY_VALUE => self::formatTimeValue($workingTime)
             ];
         }
         return [
@@ -27,12 +33,5 @@ class WorkingTimeReport extends BaseReport
             Reports::KEY_TOTAL_VALUE => self::formatTimeValue($totalValue),
             Reports::KEY_TIME_UNIT => $this->getTimeUnit()
         ];
-    }
-
-    protected function calculateAvailableTime(ReportIntervalValue $intervalValue) : int
-    {
-        $periodLength = $intervalValue->end->diffInSeconds($intervalValue->start);
-        $totalTime = $periodLength * $this->getWorkingCameraCount();
-        return $totalTime - $intervalValue->value;
     }
 }

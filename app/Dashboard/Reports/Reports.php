@@ -8,8 +8,8 @@ use App\Dashboard\Reports\Custom\WorkingTimeReportPercent;
 use App\Dashboard\Reports\Custom\ProblemTimeReport;
 use App\Dashboard\Reports\Custom\TotalTimeReport;
 use App\Dashboard\Reports\Custom\NotWorkingCameraCountReport;
-use App\Dashboard\Reports\Readers\ModeTimeReader;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Dashboard\Reports\Readers\MetricTimeReader;
+use App\Securos\SecurosMetrics;
 
 class Reports
 {
@@ -41,13 +41,20 @@ class Reports
         self::$workingTimeReportPercent= new WorkingTimeReportPercent($params);
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function makeReports(ReportParams $params) : array
     {
         self::initReports($params);
 
+        // Даные считываются один раз из API клиента и затем используются в трёх различных отчетах
+        $availableTimeReader = new MetricTimeReader(SecurosMetrics::TAG_AVAILABLE);
+        $availableTimeReader->readData($params);
+
         $result = [
             self::REPORT_TOTAL_TIME =>
-                self::$hourCountReport->getResult(),
+                self::$hourCountReport->getResult($availableTimeReader->getResult()),
             self::REPORT_NOT_WORKING_CAMERA_COUNT =>
                 self::$notWorkingCameraCountReport->getResult(),
         ];
@@ -58,25 +65,17 @@ class Reports
         }
 
         // Даные считываются один раз из API клиента и затем используются в трёх различных отчетах
-        $modeTimeReader = new ModeTimeReader();
-        try {
-            $modeTimeReader->readData($params);
-        }
-        catch (HttpException $e) {
-            throw $e;
-        }
+        $problemStreamTimeReader = new MetricTimeReader(SecurosMetrics::TAG_PROBLEM_STREAM);
+        $problemStreamTimeReader->readData($params);
 
-        try {
-            $result[self::REPORT_PROBLEM_TIME] =
-                self::$problemTimeReport->getResult($modeTimeReader->getResult());
-            $result[self::REPORT_WORKING_TIME] =
-                self::$workingTimeReport->getResult($modeTimeReader->getResult());
-            $result[self::REPORT_WORKING_TIME_PERCENT] =
-                self::$workingTimeReportPercent->getResult($modeTimeReader->getResult());
-        }
-        catch (\Exception $e) {
-            throw $e;
-        }
+        $result[self::REPORT_PROBLEM_TIME] =
+            self::$problemTimeReport->getResult($problemStreamTimeReader->getResult());
+        $result[self::REPORT_WORKING_TIME] =
+            self::$workingTimeReport->getResult(
+                $availableTimeReader->getResult(), $problemStreamTimeReader->getResult());
+        $result[self::REPORT_WORKING_TIME_PERCENT] =
+            self::$workingTimeReportPercent->getResult(
+                $availableTimeReader->getResult(), $problemStreamTimeReader->getResult());
 
         return $result;
     }
