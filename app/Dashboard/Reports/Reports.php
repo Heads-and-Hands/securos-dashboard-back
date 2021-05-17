@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Dashboard\Reports;
 
-use App\Dashboard\Reports\Custom\AvailableTimeReport;
-use App\Dashboard\Reports\Custom\AvailableTimeReportPercent;
+use App\Dashboard\Reports\Custom\WorkingTimeReport;
+use App\Dashboard\Reports\Custom\WorkingTimeReportPercent;
 use App\Dashboard\Reports\Custom\ProblemTimeReport;
 use App\Dashboard\Reports\Custom\TotalTimeReport;
 use App\Dashboard\Reports\Custom\NotWorkingCameraCountReport;
@@ -16,8 +16,8 @@ class Reports
     public const REPORT_TOTAL_TIME = 'totalTime';
     public const REPORT_NOT_WORKING_CAMERA_COUNT = 'notWorkingCameraCount';
     public const REPORT_PROBLEM_TIME = 'problemTime';
-    public const REPORT_AVAILABLE_TIME = 'availableTime';
-    public const REPORT_AVAILABLE_TIME_PERCENT = 'availableTimePercent';
+    public const REPORT_WORKING_TIME = 'workingTime';
+    public const REPORT_WORKING_TIME_PERCENT = 'workingTimePercent';
 
     public const KEY_INTERVALS = 'intervals';
     public const KEY_START = 'start';
@@ -29,16 +29,16 @@ class Reports
     private static TotalTimeReport $hourCountReport;
     private static NotWorkingCameraCountReport $notWorkingCameraCountReport;
     private static ProblemTimeReport $problemTimeReport;
-    private static AvailableTimeReport $availableTimeReport;
-    private static AvailableTimeReportPercent $availableTimeReportPercent;
+    private static WorkingTimeReport $workingTimeReport;
+    private static WorkingTimeReportPercent $workingTimeReportPercent;
 
     private static function initReports(ReportParams $params)
     {
         self::$hourCountReport = new TotalTimeReport($params);
         self::$notWorkingCameraCountReport = new NotWorkingCameraCountReport($params);
         self::$problemTimeReport = new ProblemTimeReport($params);
-        self::$availableTimeReport = new AvailableTimeReport($params);
-        self::$availableTimeReportPercent= new AvailableTimeReportPercent($params);
+        self::$workingTimeReport = new WorkingTimeReport($params);
+        self::$workingTimeReportPercent= new WorkingTimeReportPercent($params);
     }
 
     public static function makeReports(ReportParams $params) : array
@@ -69,10 +69,10 @@ class Reports
         try {
             $result[self::REPORT_PROBLEM_TIME] =
                 self::$problemTimeReport->getResult($modeTimeReader->getResult());
-            $result[self::REPORT_AVAILABLE_TIME] =
-                self::$availableTimeReport->getResult($modeTimeReader->getResult());
-            $result[self::REPORT_AVAILABLE_TIME_PERCENT] =
-                self::$availableTimeReportPercent->getResult($modeTimeReader->getResult());
+            $result[self::REPORT_WORKING_TIME] =
+                self::$workingTimeReport->getResult($modeTimeReader->getResult());
+            $result[self::REPORT_WORKING_TIME_PERCENT] =
+                self::$workingTimeReportPercent->getResult($modeTimeReader->getResult());
         }
         catch (\Exception $e) {
             throw $e;

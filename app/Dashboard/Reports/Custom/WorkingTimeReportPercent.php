@@ -8,7 +8,7 @@ use App\Dashboard\Reports\ReportIntervalValue;
 use App\Dashboard\Reports\BaseReport;
 use App\Dashboard\Reports\Reports;
 
-class AvailableTimeReportPercent extends BaseReport
+class WorkingTimeReportPercent extends BaseReport
 {
     public function getResult(array $data = []) : array
     {

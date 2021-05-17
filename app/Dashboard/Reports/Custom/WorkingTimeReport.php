@@ -7,7 +7,7 @@ use App\Dashboard\Reports\BaseReport;
 use App\Dashboard\Reports\ReportIntervalValue;
 use App\Dashboard\Reports\Reports;
 
-class AvailableTimeReport extends BaseReport
+class WorkingTimeReport extends BaseReport
 {
     public function getResult(array $data = []) : array
     {

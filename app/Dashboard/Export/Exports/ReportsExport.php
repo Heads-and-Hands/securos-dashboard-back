@@ -66,13 +66,13 @@ class ReportsExport implements FromCollection, WithColumnWidths
 
         $output [] = [__('reports.report_title_available_time')];
         $output = array_merge(
-            $output, $this->generateTimeIntervalReport($this->data->reports[Reports::REPORT_AVAILABLE_TIME]));
+            $output, $this->generateTimeIntervalReport($this->data->reports[Reports::REPORT_WORKING_TIME]));
         $output [] = [''];
 
         $output [] = [__('reports.report_title_available_time_percent')];
         $output = array_merge(
             $output, $this->generatePercentIntervalReport(
-            $this->data->reports[Reports::REPORT_AVAILABLE_TIME_PERCENT]));
+            $this->data->reports[Reports::REPORT_WORKING_TIME_PERCENT]));
         $output [] = [''];
 
         $output [] = [__('reports.report_title_problem_time')];
