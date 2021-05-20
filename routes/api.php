@@ -36,6 +36,12 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('report/{exportReportClass?}', ReportController::class)->only(['index']);
     });
 });
+
+Route::get('error', function() {
+    //throw new \Exception("Test Error");
+    echo (1/0);
+});
+
 #TODO: Удалить
 // Рабочий URL для экспорта в Excel:
 // 127.0.0.1:28591/api/v1/report/excel?ids=1,2,3,11&rangeOfDate=20210428T130000-20210501T120000&timezoneOffset=-180

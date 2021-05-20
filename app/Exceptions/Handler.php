@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -30,14 +31,24 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Throwable  $exception
+     * @param \Throwable $exception
      * @return void
      *
      * @throws \Exception
+     * @throws Throwable
      */
     public function report(Throwable $exception)
     {
-        parent::report($exception);
+        //parent::report($exception);
+        // Some exceptions don't have a message
+        $exceptionMessage = (!empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception');
+        // Log message
+        $logMessage = $exceptionMessage . " {" . $exception->getFile() . ":" . $exception->getLine() . "}";
+        if (!config('app.debug')) {
+            Log::error($logMessage);
+        } else {
+            parent::report($exception);
+        }
     }
 
     /**

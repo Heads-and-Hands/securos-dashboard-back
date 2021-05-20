@@ -37,13 +37,14 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single', 'errorlog'],
+            'channels' => ['single'],
             'ignore_exceptions' => false,
         ],
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => env('LOG_FILE_PATH', storage_path('logs/laravel.log')),
+            'tap' => [App\Logging\CustomizeFormatter::class],
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
@@ -100,5 +101,8 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
     ],
+
+    'log_line_format' => env('LOG_LINE_FORMAT','[%datetime%] %channel%.%level_name%: %message% %context% %extra%'),
+    'log_line_datetime_format' => env('LOG_LINE_DATETIME_FORMAT','Y-m-d H:i:s.v')
 
 ];
