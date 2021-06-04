@@ -38,7 +38,7 @@ class ReportPeriod
 
     private function initIntervalType()
     {
-        if ($this->endDateTime->diffInHours($this->startDateTime) < 24) {
+        if ($this->endDateTime->diffInMinutes($this->startDateTime) <= 24 * 60) {
             $this->intervalType = self::INTERVAL_HOUR;
         }
         elseif ($this->endDateTime->diffInMonths($this->startDateTime) < 1) {

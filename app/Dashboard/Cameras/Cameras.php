@@ -40,4 +40,11 @@ class Cameras
                 'status_exploitation', 'passport', 'status', 'approval_at', 'creation_at', 'approved', 'update_time']);
     }
 
+    public static function updateCamera($id)
+    {
+        $data = SecurosCameras::getCamera($id);
+        VideoCamera::where('id', $id)->update($data);
+    }
+
+
 }

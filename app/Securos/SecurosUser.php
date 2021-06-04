@@ -6,7 +6,7 @@ namespace App\Securos;
 
 class SecurosUser
 {
-    protected const CHECK_AUTH_URL = 'api/v1/cameras';
+    protected const CHECK_AUTH_URL = 'api/v1/auth';
 
     private static $authKey;
 

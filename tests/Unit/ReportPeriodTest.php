@@ -45,7 +45,7 @@ class ReportPeriodTest extends TestCase
         $this->assertTrue($period->intervals[3]->end->equalTo(Carbon::parse('20210421T162000')));
     }
 
-    public function testSplitByDaysMinPeriod()
+    public function testSplitByHoursMaxPeriod()
     {
         $period = new ReportPeriod(
             Carbon::parse('20210421T000000'),
@@ -53,10 +53,22 @@ class ReportPeriodTest extends TestCase
             0
         );
 
-        $this->assertCount(1, $period->intervals);
+        $this->assertCount(24, $period->intervals);
+        $this->assertEquals(ReportPeriod::INTERVAL_HOUR, $period->intervalType);
+    }
+
+    public function testSplitByDaysMinPeriod()
+    {
+        $period = new ReportPeriod(
+            Carbon::parse('20210421T000000'),
+            Carbon::parse('20210422T000100'),
+            0
+        );
+
+        $this->assertCount(2, $period->intervals);
         $this->assertEquals(ReportPeriod::INTERVAL_DAY, $period->intervalType);
         $this->assertTrue($period->intervals[0]->start->equalTo(Carbon::parse('20210421T000000')));
-        $this->assertTrue($period->intervals[0]->end->equalTo(Carbon::parse('20210422T000000')));
+        $this->assertTrue($period->intervals[1]->end->equalTo(Carbon::parse('20210422T000100')));
     }
 
     public function testSplitByDaysBoundsMatch()

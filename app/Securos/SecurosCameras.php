@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class SecurosCameras extends BaseRequest
 {
     protected const CAMERAS_URL = 'api/v1/cameras';
+    protected const CAMERA_URL = 'api/v1/cameras/';
 
     public static function getCameras(): array
     {
@@ -18,30 +19,40 @@ class SecurosCameras extends BaseRequest
         return self::formatCameras($cameras);
     }
 
+    public static function getCamera($id): array
+    {
+        $data = parent::get(self::CAMERA_URL . $id);
+        $camera = json_decode($data)->data;
+        return self::formatCamera($camera);
+    }
+
     public static function formatCameras($cameras):array
     {
         $data = [];
-
         foreach ($cameras as $camera) {
-            $data[] = [
-                'id' => $camera->id,
-                'ip' => $camera->ip ?: '0.0.0.0',
-                'name' => $camera->name,
-                'passport' => $camera->passport ?? null,
-                'type' => self::getType($camera->ptz),
-                'ip_decode' => self::getIpDecode($camera->ip),
-                'ip_server' => $camera->server ?: '0.0.0.0',
-                'ip_server_decode' => self::getIpDecode($camera->server),
-                'status_exploitation' => self::getStatusExploitation($camera),
-                'status' => self::getStatus($camera->status),
-                'approval_at' => isset($camera->approval_time) ? self::formatDateTime($camera->approval_time) : null,
-                'creation_at' => isset($camera->creation_time) ? self::formatDateTime($camera->creation_time) : null,
-                'approved' => $camera->approved ?? false,
-                'update_time' => isset($camera->update_time) ? self::formatDateTime($camera->update_time) : null,
-            ];
+            $data []= self::formatCamera($camera);
         }
-
         return $data;
+    }
+
+    public static function formatCamera($camera):array
+    {
+        return [
+            'id' => $camera->id,
+            'ip' => $camera->ip ?: '0.0.0.0',
+            'name' => $camera->name,
+            'passport' => $camera->passport ?? null,
+            'type' => self::getType($camera->ptz),
+            'ip_decode' => self::getIpDecode($camera->ip),
+            'ip_server' => $camera->server ?: '0.0.0.0',
+            'ip_server_decode' => self::getIpDecode($camera->server),
+            'status_exploitation' => self::getStatusExploitation($camera),
+            'status' => self::getStatus($camera->status),
+            'approval_at' => isset($camera->approval_time) ? self::formatDateTime($camera->approval_time) : null,
+            'creation_at' => isset($camera->creation_time) ? self::formatDateTime($camera->creation_time) : null,
+            'approved' => $camera->approved ?? false,
+            'update_time' => isset($camera->update_time) ? self::formatDateTime($camera->update_time) : null,
+        ];
     }
 
     public static function getType(bool $type): int
