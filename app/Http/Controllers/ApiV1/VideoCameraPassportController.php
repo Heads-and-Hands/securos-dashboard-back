@@ -23,16 +23,6 @@ class VideoCameraPassportController extends Controller
         if (isset($response->status) && $response->status > 300) {
             return response()->json(['message' => $response->message], $response->status);
         }
-        //TODO: Удалить
-        /*
-        if (isset($response->update_time, $response->approved, $response->passport)) {
-            $camera->update_time = SecurosCameras::formatDateTime($response->update_time);
-            $camera->approved = $response->approved;
-            $camera->passport = $response->passport;
-            $camera->status_exploitation = SecurosCameras::getStatusExploitation($camera);
-            $camera->save();
-        }
-        */
         $camera = self::reloadCameraParams($camera->id);
         return new VideoCameraResource($camera);
     }
@@ -52,12 +42,6 @@ class VideoCameraPassportController extends Controller
         if (isset($response->status) && $response->status > 300) {
             return response()->json(['message' => $response->message], $response->status);
         }
-        //TODO: Удалить
-        /*
-        if (isset($response->update_time)) {
-            $camera->update_time = SecurosCameras::formatDateTime($response->update_time);
-            $camera->save();
-        }*/
         $camera = self::reloadCameraParams($camera->id);
         return new VideoCameraResource($camera);
     }
@@ -68,14 +52,6 @@ class VideoCameraPassportController extends Controller
         if (isset($response->status) && $response->status > 300) {
             return response()->json(['message' => $response->message], $response->status);
         }
-        //TODO: Удалить
-        /*
-        if (isset($response->update_time, $response->approved)) {
-            $camera->update_time = SecurosCameras::formatDateTime($response->update_time);
-            $camera->approved = $response->approved;
-            $camera->status_exploitation = SecurosCameras::getStatusExploitation($camera);
-            $camera->save();
-        }*/
         $camera = self::reloadCameraParams($camera->id);
         return new VideoCameraResource($camera);
     }
@@ -86,14 +62,6 @@ class VideoCameraPassportController extends Controller
         if (isset($response->status) && $response->status > 300) {
             return response()->json(['message' => $response->message], $response->status);
         }
-        //TODO: Удалить
-        /*
-        $camera->approved = false;
-        $camera->passport = null;
-        $camera->update_time = null;
-        $camera->status_exploitation = VideoCamera::NOT_FILLED;
-        $camera->save();
-        */
         $camera = self::reloadCameraParams($camera->id);
         return new VideoCameraResource($camera);
     }
