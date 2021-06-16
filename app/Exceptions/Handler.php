@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -62,6 +63,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if (method_exists($exception, 'render') && $response = $exception->render($request)) {
+            return Router::toResponse($request, $response);
+        }
+
         if ($request->isJson() || strpos($request->getRequestUri(), '/api/') !== false) {
             return $this->handleApiException($request, $exception);
         }

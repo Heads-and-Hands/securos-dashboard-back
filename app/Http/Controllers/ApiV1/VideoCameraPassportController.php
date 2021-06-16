@@ -20,9 +20,6 @@ class VideoCameraPassportController extends Controller
     public function store(VideoCameraPassportRequest $request, VideoCamera $camera)
     {
         $response = SecurosCameraPassport::createCameraPassport($camera->id, $request->stream);
-        if (isset($response->status) && $response->status > 300) {
-            return response()->json(['message' => $response->message], $response->status);
-        }
         $camera = self::reloadCameraParams($camera->id);
         return new VideoCameraResource($camera);
     }
@@ -39,9 +36,6 @@ class VideoCameraPassportController extends Controller
     public function update(VideoCameraPassportRequest $request, VideoCamera $camera)
     {
         $response = SecurosCameraPassport::updateCameraPassport($camera->id, $request->stream);
-        if (isset($response->status) && $response->status > 300) {
-            return response()->json(['message' => $response->message], $response->status);
-        }
         $camera = self::reloadCameraParams($camera->id);
         return new VideoCameraResource($camera);
     }
@@ -49,9 +43,6 @@ class VideoCameraPassportController extends Controller
     public function approve(VideoCamera $camera)
     {
         $response = SecurosCameraPassport::approveCameraPassport($camera->id);
-        if (isset($response->status) && $response->status > 300) {
-            return response()->json(['message' => $response->message], $response->status);
-        }
         $camera = self::reloadCameraParams($camera->id);
         return new VideoCameraResource($camera);
     }
@@ -59,9 +50,6 @@ class VideoCameraPassportController extends Controller
     public function destroy(VideoCamera $camera)
     {
         $response = SecurosCameraPassport::deleteCameraPassport($camera->id);
-        if (isset($response->status) && $response->status > 300) {
-            return response()->json(['message' => $response->message], $response->status);
-        }
         $camera = self::reloadCameraParams($camera->id);
         return new VideoCameraResource($camera);
     }

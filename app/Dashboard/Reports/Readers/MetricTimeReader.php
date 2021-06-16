@@ -28,9 +28,6 @@ class MetricTimeReader
                 $params->workingVideoCameraIds,
                 $interval->start,
                 $interval->end);
-            if (isset($response->status) && $response->status > 300) {
-                throw new HttpException($response->status, $response->message);
-            }
             $valueSum = 0;
             foreach ($response->values[0] as $key => $value) {
                 if (!in_array($key, ['start', 'end'])) {
