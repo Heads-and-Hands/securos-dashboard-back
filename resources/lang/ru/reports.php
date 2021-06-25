@@ -9,6 +9,7 @@ return [
     'report_total_time' => 'Требуемое кол-во часов записи по камерам за все время: :value',
     'report_not_working_camera_count' => 'Кол-во камер не в эксплуатации: :value',
     'report_title_problem_time' => 'Время нахождения камер в режиме Неисправность',
+    'report_title_archive_time' => 'Время нахождения камер в режиме Архив',
     'report_title_available_time' => 'Время нахождения камер в режиме Штатно',
     'report_title_available_time_percent' => 'Время нахождения камер в режиме Штатно в процентах от требуемого времени',
     'total_value_time' => 'Общее время: :value',

@@ -17,6 +17,7 @@ class SecurosMetrics extends BaseRequest
     public const TAG_PROBLEM_STREAM_FPS = 40;
     public const TAG_PROBLEM_STREAM_BPS = 50;
     public const TAG_PROBLEM_STREAM_RES = 60;
+    public const TAG_ARCHIVE = 70;
 
     private static array $tags = [
         self::TAG_AVAILABLE  => 'available',
@@ -25,6 +26,7 @@ class SecurosMetrics extends BaseRequest
         self::TAG_PROBLEM_STREAM_FPS => 'problem-stream-fps',
         self::TAG_PROBLEM_STREAM_BPS => 'problem-stream-bps',
         self::TAG_PROBLEM_STREAM_RES => 'problem-stream-res',
+        self::TAG_ARCHIVE => 'archive',
     ];
 
     public static function getMetrics(

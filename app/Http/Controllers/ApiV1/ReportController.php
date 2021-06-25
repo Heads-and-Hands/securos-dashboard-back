@@ -8,6 +8,7 @@ use App\Dashboard\Export\ExportReport;
 use App\Dashboard\Export\ExportReportData;
 use App\Dashboard\Auth\DashboardUser;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ApiV1\CardResource;
 use App\Models\ApiV1\Filter\VideoCameraReportFilter;
 use App\Http\Requests\ApiV1\VideoCamera\Filter\VideoCameraReportFilterRequest;
 use App\Models\ApiV1\VideoCamera;
@@ -21,8 +22,15 @@ class ReportController extends Controller
 {
     public function index(VideoCameraReportFilter $filter, ExportReportInterface $exportReport = null)
     {
+        $currentDateTime =  Carbon::now();
         $videoCameras = VideoCamera::reportFilter($filter)->get();
         $dates = explode("-", $filter->getRequest()->get('rangeOfDate'));
+        foreach ($dates as $dateIndex => $date) {
+            $dates[$dateIndex] = Carbon::parse($date);
+        }
+        if ($dates[1]->greaterThan($currentDateTime)) {
+            $dates[1] = $currentDateTime->copy();
+        }
 
         if ($filter->getRequest()->has('locale')) {
             App::setLocale($filter->getRequest()->get('locale'));
@@ -30,8 +38,8 @@ class ReportController extends Controller
 
         $params = new ReportParams(
             $videoCameras,
-            Carbon::parse($dates[0]),
-            Carbon::parse($dates[1]),
+            $dates[0],
+            $dates[1],
             intval($filter->getRequest()->get('timezoneOffset'))
         );
 

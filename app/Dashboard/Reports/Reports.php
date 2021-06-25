@@ -5,7 +5,7 @@ namespace App\Dashboard\Reports;
 
 use App\Dashboard\Reports\Custom\WorkingTimeReport;
 use App\Dashboard\Reports\Custom\WorkingTimeReportPercent;
-use App\Dashboard\Reports\Custom\ProblemTimeReport;
+use App\Dashboard\Reports\Custom\SimpleTimeReport;
 use App\Dashboard\Reports\Custom\TotalTimeReport;
 use App\Dashboard\Reports\Custom\NotWorkingCameraCountReport;
 use App\Dashboard\Reports\Readers\MetricTimeReader;
@@ -18,6 +18,7 @@ class Reports
     public const REPORT_PROBLEM_TIME = 'problemTime';
     public const REPORT_WORKING_TIME = 'workingTime';
     public const REPORT_WORKING_TIME_PERCENT = 'workingTimePercent';
+    public const REPORT_ARCHIVE_TIME = 'archiveTime';
 
     public const KEY_INTERVALS = 'intervals';
     public const KEY_START = 'start';
@@ -28,7 +29,8 @@ class Reports
 
     private static TotalTimeReport $hourCountReport;
     private static NotWorkingCameraCountReport $notWorkingCameraCountReport;
-    private static ProblemTimeReport $problemTimeReport;
+    private static SimpleTimeReport $problemTimeReport;
+    private static SimpleTimeReport $archiveTimeReport;
     private static WorkingTimeReport $workingTimeReport;
     private static WorkingTimeReportPercent $workingTimeReportPercent;
 
@@ -36,7 +38,8 @@ class Reports
     {
         self::$hourCountReport = new TotalTimeReport($params);
         self::$notWorkingCameraCountReport = new NotWorkingCameraCountReport($params);
-        self::$problemTimeReport = new ProblemTimeReport($params);
+        self::$problemTimeReport = new SimpleTimeReport($params);
+        self::$archiveTimeReport = new SimpleTimeReport($params);
         self::$workingTimeReport = new WorkingTimeReport($params);
         self::$workingTimeReportPercent= new WorkingTimeReportPercent($params);
     }
@@ -48,7 +51,7 @@ class Reports
     {
         self::initReports($params);
 
-        // Даные считываются один раз из API клиента и затем используются в трёх различных отчетах
+        // Данные считываются один раз из API клиента и затем используются в трёх различных отчетах
         $availableTimeReader = new MetricTimeReader(SecurosMetrics::TAG_AVAILABLE);
         $availableTimeReader->readData($params);
 
@@ -64,7 +67,7 @@ class Reports
             return $result;
         }
 
-        // Даные считываются один раз из API клиента и затем используются в трёх различных отчетах
+        // Данные считываются один раз из API клиента и затем используются в трёх различных отчетах
         $problemStreamTimeReader = new MetricTimeReader(SecurosMetrics::TAG_PROBLEM_STREAM);
         $problemStreamTimeReader->readData($params);
 
@@ -76,6 +79,12 @@ class Reports
         $result[self::REPORT_WORKING_TIME_PERCENT] =
             self::$workingTimeReportPercent->getResult(
                 $availableTimeReader->getResult(), $problemStreamTimeReader->getResult());
+
+        $archiveTimeReader = new MetricTimeReader(SecurosMetrics::TAG_ARCHIVE);
+        $archiveTimeReader->readData($params);
+
+        $result[self::REPORT_ARCHIVE_TIME] =
+            self::$archiveTimeReport->getResult($archiveTimeReader->getResult());
 
         return $result;
     }

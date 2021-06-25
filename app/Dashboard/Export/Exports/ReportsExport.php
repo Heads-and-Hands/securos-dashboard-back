@@ -80,6 +80,11 @@ class ReportsExport implements FromCollection, WithColumnWidths
             $output, $this->generateTimeIntervalReport($this->data->reports[Reports::REPORT_PROBLEM_TIME]));
         $output [] = [''];
 
+        $output [] = [__('reports.report_title_archive_time')];
+        $output = array_merge(
+            $output, $this->generateTimeIntervalReport($this->data->reports[Reports::REPORT_ARCHIVE_TIME]));
+        $output [] = [''];
+
         return new Collection($output);
     }
 

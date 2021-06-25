@@ -6,7 +6,7 @@ namespace App\Dashboard\Reports\Custom;
 use App\Dashboard\Reports\BaseReport;
 use App\Dashboard\Reports\Reports;
 
-class ProblemTimeReport extends  BaseReport
+class SimpleTimeReport extends  BaseReport
 {
     public function getResult(array $data = []) : array
     {
