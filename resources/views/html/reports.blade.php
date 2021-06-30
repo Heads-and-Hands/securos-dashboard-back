@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="favicon.ico">
     <title>securos-dashboard</title>
-    <link href="css/app.36f4a1c4.css" rel="preload" as="style"><link href="js/app.64e71bd0.js" rel="preload" as="script"><link href="js/chunk-vendors.f99d67b3.js" rel="preload" as="script"><link href="css/app.36f4a1c4.css" rel="stylesheet"></head>
+    <link href="css/app.36f4a1c4.css" rel="preload" as="style"><link href="js/app.2d1a6837.js" rel="preload" as="script"><link href="js/chunk-vendors.f99d67b3.js" rel="preload" as="script"><link href="css/app.36f4a1c4.css" rel="stylesheet"></head>
 <body>
 <noscript>
     <strong>We're sorry but securos-dashboard doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
@@ -27,5 +27,5 @@
     window.lang = '{{ $lang }}'
 </script>
 <!-- built files will be auto injected -->
-<script type="text/javascript" src="js/chunk-vendors.f99d67b3.js"></script><script type="text/javascript" src="js/app.64e71bd0.js"></script></body>
+<script type="text/javascript" src="js/chunk-vendors.f99d67b3.js"></script><script type="text/javascript" src="js/app.2d1a6837.js"></script></body>
 </html>

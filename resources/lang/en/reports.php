@@ -9,7 +9,7 @@ return [
     'report_total_time' => 'Required number of hours of recording by cameras for all time: :value',
     'report_not_working_camera_count' => 'The number of cameras are not in exploitation: :value',
     'report_title_problem_time' => 'The residence time of the cameras in "Defect"',
-    'report_title_archive_time' => 'The residence time of the cameras in "Archive"',
+    'report_title_archive_time' => 'Archive time recorded by camera',
     'report_title_available_time' => 'The residence time of the cameras in "Regular camera"',
     'report_title_available_time_percent' =>
         'The residence time of the cameras in "Regular camera" as a percentage of the required time ',
